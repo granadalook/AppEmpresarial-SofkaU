@@ -1,9 +1,12 @@
 package co.com.sofka.questions.security.collections;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserMajor implements UserDetails{
 
@@ -19,6 +22,13 @@ public class UserMajor implements UserDetails{
         Email = email;
         this.password = password;
         this.authorities = authorities;
+    }
+
+    public static UserMajor build(User user){
+        List<GrantedAuthority> authorities =
+                user.getRoles().stream().map(rol -> new SimpleGrantedAuthority(rol
+                        .getRolname().name())).collect(Collectors.toList());
+        return new UserMajor(user.getName(),user.getUsername(), user.getEmail(), user.getPassword(), authorities);
     }
 
     @Override
