@@ -29,7 +29,7 @@ public class User {
     private String password;
 
     @NotNull
-    private Set<Rol> roles = new HashSet<>();
+    private String rol ;
 
     public User() {
     }
@@ -81,11 +81,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<Rol> getRoles() {
-        return roles;
+    public String getRol() {
+        return rol;
     }
 
-    public void setRoles(Set<Rol> roles) {
-        this.roles = roles;
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 }

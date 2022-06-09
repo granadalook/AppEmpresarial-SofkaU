@@ -21,7 +21,7 @@ public class JwtProvider {
     @Value("${jwt.expiration}")
     private Integer expiration;
 
-    public String generateToken(Authentication authentication){
+    public String generateToken(Authentication authentication) {
         UserMajor userMajor = (UserMajor) authentication.getPrincipal();
         return Jwts.builder().setSubject(userMajor.getUsername())
                 .setIssuedAt(new Date())
@@ -30,23 +30,23 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String getUserNameFromToken(String token){
+    public String getUserNameFromToken(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public boolean validateToken(String token){
+    public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
-        }catch (MalformedJwtException e){
+        } catch (MalformedJwtException e) {
             logger.error("Token mal formado");
-        }catch (UnsupportedJwtException e){
+        } catch (UnsupportedJwtException e) {
             logger.error("Token no soportado");
-        }catch (ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             logger.error("Token expirado");
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             logger.error("Token vacío");
-        }catch (SignatureException e){
+        } catch (SignatureException e) {
             logger.error("Falla en la firma");
         }
         return false;

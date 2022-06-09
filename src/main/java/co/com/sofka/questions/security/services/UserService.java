@@ -10,22 +10,26 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired(required=true)
+    @Autowired(required = true)
     UserRepository userRepository;
 
-    public Optional<User> getByUserName(String userName){
+    public Optional<User> getByUserName(String userName) {
         return userRepository.findByUsername(userName);
     }
 
-    public boolean existsByUserName(String userName){
+    public Optional<User> getByRolName(String rol) {
+        return userRepository.findByRol(rol);
+    }
+
+    public boolean existsByUserName(String userName) {
         return userRepository.existsByUsername(userName);
     }
 
-    public boolean existsByEmail(String email){
+    public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
 
-    public void saveUser(User user){
+    public void saveUser(User user) {
         userRepository.save(user);
     }
 }

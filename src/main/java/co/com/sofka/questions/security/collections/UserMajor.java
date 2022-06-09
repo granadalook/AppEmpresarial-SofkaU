@@ -14,9 +14,9 @@ public class UserMajor implements UserDetails{
     private String username;
     private String Email;
     private String password;
-    private Collection<? extends GrantedAuthority> authorities;
+    private   GrantedAuthority authorities;
 
-    public UserMajor(String name, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserMajor(String name, String username, String email, String password,   GrantedAuthority authorities) {
         this.name = name;
         this.username = username;
         Email = email;
@@ -25,9 +25,8 @@ public class UserMajor implements UserDetails{
     }
 
     public static UserMajor build(User user){
-        List<GrantedAuthority> authorities =
-                user.getRoles().stream().map(rol -> new SimpleGrantedAuthority(rol
-                        .getRolName().name())).collect(Collectors.toList());
+        GrantedAuthority authorities = new SimpleGrantedAuthority(user.getRol());
+
         return new UserMajor(user.getName(),user.getUsername(), user.getEmail(), user.getPassword(), authorities);
     }
 

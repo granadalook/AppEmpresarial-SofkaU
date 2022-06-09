@@ -1,14 +1,11 @@
 package co.com.sofka.questions.security.controller;
 
-import co.com.sofka.questions.security.collections.Rol;
 import co.com.sofka.questions.security.collections.User;
 import co.com.sofka.questions.security.dto.JwtDto;
 import co.com.sofka.questions.security.dto.LoginUser;
 import co.com.sofka.questions.security.dto.Mensaje;
 import co.com.sofka.questions.security.dto.NewUser;
-import co.com.sofka.questions.security.enums.RolName;
 import co.com.sofka.questions.security.jwt.JwtProvider;
-import co.com.sofka.questions.security.services.RolService;
 import co.com.sofka.questions.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashSet;
-import java.util.Set;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -40,14 +37,12 @@ public class AuthController {
     @Autowired(required=true)
     UserService userService;
 
-    @Autowired(required=true)
-    RolService rolService;
 
     @Autowired(required=true)
     JwtProvider jwtProvider;
 
-    @PostMapping("/nuevo")
-    public ResponseEntity<?> nuevo(@Valid @RequestBody NewUser newUser, BindingResult bindingResult){
+    @PostMapping("/create")
+    public ResponseEntity<?> create(@Valid @RequestBody NewUser newUser, BindingResult bindingResult){
         if(bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("Campos mal diligenciados o email inválido"), HttpStatus.BAD_REQUEST);
         if(userService.existsByUserName(newUser.getUserName()))
@@ -57,11 +52,7 @@ public class AuthController {
         User user =
                 new User(newUser.getName(), newUser.getUserName(), newUser.getEmail(),
                         passwordEncoder.encode(newUser.getPassword()));
-        Set<Rol> roles = new HashSet<>();
-        roles.add(rolService.getByRolName(RolName.ROLE_USER).get());
-        if(newUser.getRoles().contains("admin"))
-            roles.add(rolService.getByRolName(RolName.ROLE_ADMIN).get());
-        user.setRoles(roles);
+        user.setRol("ADMIN");
         userService.saveUser(user);
         return new ResponseEntity(new Mensaje("Usuario guardado con exito."), HttpStatus.CREATED);
     }
