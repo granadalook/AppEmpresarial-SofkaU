@@ -10,7 +10,7 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired
+    @Autowired(required=true)
     UserRepository userRepository;
 
     public Optional<User> getByUserName(String userName){

@@ -1,5 +1,6 @@
 package co.com.sofka.questions.security.collections;
 
+
 import co.com.sofka.questions.security.enums.RolName;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,9 +17,9 @@ public class Rol {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private RolName rolname;
+    private RolName rolName;
 
-    public Rol() {
+    public Rol(RolName roleName) {
     }
 
     public String getIdRol() {
@@ -29,11 +30,11 @@ public class Rol {
         this.idRol = idRol;
     }
 
-    public RolName getRolname() {
-        return rolname;
+    public RolName getRolName() {
+        return rolName;
     }
 
-    public void setRolname(RolName rolname) {
-        this.rolname = rolname;
+    public void setRolName(RolName rolname) {
+        this.rolName = rolname;
     }
 }
