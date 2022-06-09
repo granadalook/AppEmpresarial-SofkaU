@@ -17,9 +17,6 @@ public class UserService {
         return userRepository.findByUsername(userName);
     }
 
-    public Optional<User> getByRolName(String rol) {
-        return userRepository.findByRol(rol);
-    }
 
     public boolean existsByUserName(String userName) {
         return userRepository.existsByUsername(userName);

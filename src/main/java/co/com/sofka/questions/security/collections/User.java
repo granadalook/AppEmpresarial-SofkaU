@@ -6,7 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Document(collection = "users")
@@ -29,7 +31,8 @@ public class User {
     private String password;
 
     @NotNull
-    private String rol ;
+    private Set<Rol> roles = new HashSet<>();
+
 
     public User() {
     }
@@ -81,11 +84,11 @@ public class User {
         this.password = password;
     }
 
-    public String getRol() {
-        return rol;
+    public Set<Rol> getRoles() {
+        return roles;
     }
 
-    public void setRol(String rol) {
-        this.rol = rol;
+    public void setRoles(Set<Rol> roles) {
+        this.roles = roles;
     }
 }

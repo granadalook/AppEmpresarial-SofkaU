@@ -8,15 +8,16 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UserMajor implements UserDetails{
+
+public class UserMajor implements UserDetails {
 
     private String name;
     private String username;
     private String Email;
     private String password;
-    private   GrantedAuthority authorities;
+    private Collection<? extends GrantedAuthority> authorities;
 
-    public UserMajor(String name, String username, String email, String password,   GrantedAuthority authorities) {
+    public UserMajor(String name, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
         this.name = name;
         this.username = username;
         Email = email;
@@ -24,15 +25,17 @@ public class UserMajor implements UserDetails{
         this.authorities = authorities;
     }
 
-    public static UserMajor build(User user){
-        GrantedAuthority authorities = new SimpleGrantedAuthority(user.getRol());
-
-        return new UserMajor(user.getName(),user.getUsername(), user.getEmail(), user.getPassword(), authorities);
+    public static UserMajor build(User user) {
+        List<GrantedAuthority> authorities =
+                user.getRoles().stream().map(rol -> new SimpleGrantedAuthority(rol
+                        .getRolName())).collect(Collectors.toList());
+        return new UserMajor(user.getName(), user.getUsername(), user.getEmail(), user.getPassword(), authorities);
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override
