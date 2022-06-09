@@ -1,6 +1,8 @@
 package co.com.sofka.questions.security.dto;
 
 
+import co.com.sofka.questions.security.collections.Rol;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
@@ -17,7 +19,7 @@ public class NewUser {
     @NotBlank
     private String password;
 
-    private Set<String> roles = new HashSet<>();
+    private Set<Rol> roles = new HashSet<>();
 
     public String getName() {
         return name;
@@ -51,11 +53,11 @@ public class NewUser {
         this.password = password;
     }
 
-    public Set<String> getRoles() {
+    public Set<Rol> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<String> roles) {
+    public void setRoles(Set<Rol> roles) {
         this.roles = roles;
     }
 }
