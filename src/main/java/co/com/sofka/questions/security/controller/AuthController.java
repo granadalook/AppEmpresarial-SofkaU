@@ -46,14 +46,14 @@ public class AuthController {
     @Autowired(required=true)
     JwtProvider jwtProvider;
 
-    @PostMapping("/create")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody NewUser newUser, BindingResult bindingResult){
+    @PostMapping("/nuevo")
+    public ResponseEntity<?> nuevo(@Valid @RequestBody NewUser newUser, BindingResult bindingResult){
         if(bindingResult.hasErrors())
-            return new ResponseEntity(new Mensaje("campos mal puestos o email inválido"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Mensaje("Campos mal diligenciados o email inválido"), HttpStatus.BAD_REQUEST);
         if(userService.existsByUserName(newUser.getUserName()))
-            return new ResponseEntity(new Mensaje("ese nombre ya existe"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Mensaje("Usuario ya existe"), HttpStatus.BAD_REQUEST);
         if(userService.existsByEmail(newUser.getEmail()))
-            return new ResponseEntity(new Mensaje("ese email ya existe"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Mensaje("Email ya existe"), HttpStatus.BAD_REQUEST);
         User user =
                 new User(newUser.getName(), newUser.getUserName(), newUser.getEmail(),
                         passwordEncoder.encode(newUser.getPassword()));
@@ -63,7 +63,7 @@ public class AuthController {
             roles.add(rolService.getByRolName(RolName.ROLE_ADMIN).get());
         user.setRoles(roles);
         userService.saveUser(user);
-        return new ResponseEntity(new Mensaje("usuario guardado"), HttpStatus.CREATED);
+        return new ResponseEntity(new Mensaje("Usuario guardado con exito."), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
