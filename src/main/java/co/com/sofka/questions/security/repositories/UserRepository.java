@@ -1,7 +1,7 @@
 package co.com.sofka.questions.security.repositories;
 
+import co.com.sofka.questions.security.collections.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
