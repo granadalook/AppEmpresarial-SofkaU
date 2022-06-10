@@ -39,8 +39,8 @@ export class LoginComponent implements OnInit {
     private route: Router
   ) {
     this.loginUser = {
-      userName: 'petrosky',
-      password: '33333',
+      userName: '',
+      password: '',
     };
   }
 
@@ -145,7 +145,7 @@ export class LoginComponent implements OnInit {
 
   onLogin(): void {
     this.authService.login(this.loginUser).subscribe((data) => {
-      console.log(data.authorities, data.nombreUsuario, data.token, data.type);
+      console.log(data.authorities, data.userName, data.token, data.bearer);
     });
   }
 }

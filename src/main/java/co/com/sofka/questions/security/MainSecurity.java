@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-
 public class MainSecurity extends WebSecurityConfigurerAdapter {
 
     @Autowired(required=true)
@@ -58,9 +57,8 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    @CrossOrigin
     protected void configure(HttpSecurity http) throws Exception {
-       /*http.cors().and().csrf().disable()
+      http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
@@ -68,9 +66,9 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);*/
+        http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        http.csrf().disable()
+       /*http.csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtEntryPoint)
                 .and()
@@ -81,7 +79,7 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/auth/**").permitAll()
                 .anyRequest()
                 .authenticated();
-        http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);*/
     }
 
 }

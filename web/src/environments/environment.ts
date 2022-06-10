@@ -14,5 +14,5 @@ export const environment = {
   },
 
   authURL: 'http://localhost:8080/api/auth/',
-  loginEnd: 'login,',
+  loginEnd: 'login',
 };

@@ -1,6 +1,6 @@
 export interface Jwt {
   token: string;
-  type: string;
-  nombreUsuario: string;
+  bearer: string;
+  userName: string;
   authorities: string[];
 }
