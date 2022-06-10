@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
-import { ServiceService } from 'src/app/Service/service.service';
+import { LoginUser } from 'src/app/models/loginUser';
+import { AuthServiceService } from 'src/app/Service/authService/auth-service.service';
+import { TokenServiceService } from 'src/app/Service/tokenService/token-service.service';
 
 @Component({
   selector: 'app-login',
@@ -15,31 +17,44 @@ export class LoginComponent implements OnInit {
   mostrar2: Boolean = false;
   val1: number = 3;
   displayModal: boolean = false;
-  email: any = '';
+  userName?: string;
+  password?: string;
+  loginUser: LoginUser;
+  roles: string[] = [];
 
   public form: FormGroup = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(10)]],
+    userName: ['', [Validators.required]],
+    password: ['', [Validators.required]],
     rating: ['', []],
   });
   public form2: FormGroup = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
+    userName: ['', [Validators.required]],
   });
 
   constructor(
     private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private authService: ServiceService,
+    private authService: AuthServiceService,
+    private tokenService: TokenServiceService,
     private route: Router
-  ) {}
+  ) {
+    this.loginUser = {
+      userName: 'petrosky',
+      password: '33333',
+    };
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.tokenService.getToken()) {
+      this.roles = this.tokenService.getAuthorities();
+    }
+  }
 
-  ingresar() {
+  /*  ingresar() {
     this.mostrar = !this.mostrar;
     this.authService
-      .login(this.form.value.email, this.form.value.password)
-      .then((res) => {       
+      .login(this.form.value.userName, this.form.value.password)
+      .then((res) => {
         if (res == undefined) {
           this.messageService.add({
             severity: 'error',
@@ -59,7 +74,7 @@ export class LoginComponent implements OnInit {
       });
   }
   ingresarGoogle() {
-    this.mostrar = !this.mostrar;       
+    this.mostrar = !this.mostrar;
     this.authService
       .loginGoogle(this.form.value.email, this.form.value.password)
       .then((res) => {
@@ -72,27 +87,23 @@ export class LoginComponent implements OnInit {
           setTimeout(() => {
             this.route.navigate(['preguntas']);
           }, 3000);
-
         } else {
           this.messageService.add({
             severity: 'error',
             summary: 'Rectifique los datos',
             detail: 'Clave o Usuario incorrecto, Intente de Nuevo',
           });
-          
         }
         this.mostrar = !this.mostrar;
       });
   }
   getUserLogged() {
-    this.authService.getUserLogged().subscribe((res) => {     
-    });
+    this.authService.getUserLogged().subscribe((res) => {});
   }
- 
+
   preguntasHome() {
     this.route.navigate(['preguntas']);
   }
-
   //TODO: Utilidades
   showSuccess() {
     this.messageService.add({
@@ -130,5 +141,11 @@ export class LoginComponent implements OnInit {
       });
       this.mostrar2 = !this.mostrar2;
     } catch (error) {}
+  } */
+
+  onLogin(): void {
+    this.authService.login(this.loginUser).subscribe((data) => {
+      console.log(data.authorities, data.nombreUsuario, data.token, data.type);
+    });
   }
 }
