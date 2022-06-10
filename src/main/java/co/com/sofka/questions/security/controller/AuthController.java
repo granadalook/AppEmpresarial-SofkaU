@@ -28,7 +28,9 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/auth/")
-@CrossOrigin
+
+@CrossOrigin(origins = "http://localhost:4200")
+
 public class AuthController {
 
     @Autowired(required = true)
@@ -46,6 +48,8 @@ public class AuthController {
 
     @Autowired(required = true)
     JwtProvider jwtProvider;
+
+    @CrossOrigin
 
     @PostMapping("/create")
     public ResponseEntity<?> create(@Valid @RequestBody NewUser newUser, BindingResult bindingResult) {
@@ -65,6 +69,7 @@ public class AuthController {
         return new ResponseEntity(new Mensaje("Usuario guardado con exito."), HttpStatus.CREATED);
     }
 
+    @CrossOrigin
     @PostMapping("/login")
     public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUser loginUser, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
