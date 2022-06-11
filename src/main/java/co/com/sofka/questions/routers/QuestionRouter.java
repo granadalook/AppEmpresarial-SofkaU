@@ -24,7 +24,7 @@ public class QuestionRouter {
 
     @Bean
     public RouterFunction<ServerResponse> getAll(ListUseCase listUseCase) {
-        return route(GET("/api/getAll"),
+        return route(GET("/api/getAll").and(accept(MediaType.APPLICATION_JSON)),
                 request -> ServerResponse.ok()
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(BodyInserters.fromPublisher(listUseCase.get(), QuestionDTO.class))
