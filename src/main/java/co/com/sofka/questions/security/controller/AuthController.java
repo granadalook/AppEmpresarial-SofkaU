@@ -17,10 +17,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,31 +50,33 @@ public class AuthController {
     JwtProvider jwtProvider;
 
     @CrossOrigin
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity<?> create(@RequestBody NewUser newUser) {
-        if(userService.existsByUserName(newUser.getUsername()))
-            return new ResponseEntity<>("Ese usuario ya existe", HttpStatus.BAD_REQUEST);
+    @PostMapping("/create")
+    public ResponseEntity<?> create(@Valid @RequestBody NewUser newUser, BindingResult bindingResult) {
+        if(bindingResult.hasErrors())
+            return new ResponseEntity("email invalido o campos mal diligenciados", HttpStatus.BAD_REQUEST);
+        /*if(userService.existsByUserName(newUser.getUserName()))
+            return new ResponseEntity<>("Usuario ya existe", HttpStatus.BAD_REQUEST);*/
 
-        User user = new User(newUser.getUsername(), passwordEncoder.encode(newUser.getPassword()));
+        User user = new User(newUser.getUserName(), passwordEncoder.encode(newUser.getPassword()));
 
-        Set<Rol> roles = new HashSet<>();
-        roles.add(rolService.getByRolName("ROLE_ADMIN"));
+        Set<String> roles = new HashSet<>();
+        roles.add("ROLE_ADMIN");
         user.setRoles(roles);
-
-        userService.saveUser(user);
+        userService.save(user);
         return new ResponseEntity<>("Usuario registrado exitosamente", HttpStatus.CREATED);
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<JWTAuthResponseDto> login(@RequestBody LoginUser loginUser) {
+    @PostMapping("/login")
+    public ResponseEntity<JWTAuthResponseDto> login(@Valid @RequestBody LoginUser loginUser) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getUserName(), loginUser.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         //obtenemos el token del jwtTokenProvider
         String token = jwtProvider.generateToken(authentication);
-
-        return ResponseEntity.ok(new JWTAuthResponseDto(token));
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        JWTAuthResponseDto jwtDto = new JWTAuthResponseDto(token, userDetails.getUsername(), userDetails.getAuthorities());
+        return new ResponseEntity(jwtDto, HttpStatus.OK);
     }
 
 

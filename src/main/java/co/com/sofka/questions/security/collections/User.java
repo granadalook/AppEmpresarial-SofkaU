@@ -3,10 +3,8 @@ package co.com.sofka.questions.security.collections;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.core.GrantedAuthority;
 
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,18 +16,18 @@ public class User {
     private String idUser;
 
     @Indexed(unique = true)
-    private String username;
+    private String userName;
 
     @NotNull
     private String password;
 
-    private Set<Rol> roles = new HashSet<>();
+    private Set<String> roles = new HashSet<>();
 
     public User() {
     }
 
-    public User(String username, String password) {
-        this.username = username;
+    public User(String userName, String password) {
+        this.userName = userName;
         this.password = password;
     }
 
@@ -42,11 +40,11 @@ public class User {
     }
 
     public String getUsername() {
-        return username;
+        return userName;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.userName = username;
     }
 
     public String getPassword() {
@@ -57,11 +55,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<Rol> getRoles() {
+    public Set<String> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Rol> roles) {
+    public void setRoles(Set<String> roles) {
         this.roles = roles;
     }
 }

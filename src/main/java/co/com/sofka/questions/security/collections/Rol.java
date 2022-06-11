@@ -13,8 +13,8 @@ public class Rol {
 
     private String rolName;
 
-    public Rol() {
-        super();
+    public Rol(String rolName) {
+    this.rolName=rolName;
     }
 
     public String getIdRol() {

@@ -1,36 +1,51 @@
 package co.com.sofka.questions.security.jwt;
 
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
+
 public class JWTAuthResponseDto {
 
-    private String tokenAccess;
-    private String tokenType = "Bearer";
+    private String token;
+    private String bearer = "Bearer";
+    private String userName;
+    private Collection<? extends GrantedAuthority> authorities;
 
-    public JWTAuthResponseDto(String tokenAccess) {
-        super();
-        this.tokenAccess = tokenAccess;
+    public JWTAuthResponseDto(String token, String userName, Collection<? extends GrantedAuthority> authorities) {
+        this.token = token;
+        this.userName = userName;
+        this.authorities = authorities;
     }
 
-    public JWTAuthResponseDto(String tokenAccess, String tokenType) {
-        super();
-        this.tokenAccess = tokenAccess;
-        this.tokenType = tokenType;
+    public String getToken() {
+        return token;
     }
 
-    public String getTokenAccess() {
-        return tokenAccess;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public void setTokenAccess(String tokenAccess) {
-        this.tokenAccess = tokenAccess;
+    public String getBearer() {
+        return bearer;
     }
 
-    public String getTokenType() {
-        return tokenType;
+    public void setBearer(String bearer) {
+        this.bearer = bearer;
     }
 
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
+    public String getUserName() {
+        return userName;
     }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
 }

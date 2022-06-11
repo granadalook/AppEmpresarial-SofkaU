@@ -23,7 +23,7 @@ public class UserMajor implements UserDetails {
 
     public static UserMajor build(User user){
         List<GrantedAuthority> authorities =
-                user.getRoles().stream().map(rol -> new SimpleGrantedAuthority(rol.getRolName())).collect(Collectors.toList());
+                user.getRoles().stream().map(rol -> new SimpleGrantedAuthority("ROLE_ADMIN")).collect(Collectors.toList());
         return new UserMajor(user.getUsername(), user.getPassword(), authorities);
     }
 

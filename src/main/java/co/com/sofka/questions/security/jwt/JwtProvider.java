@@ -1,5 +1,6 @@
 package co.com.sofka.questions.security.jwt;
 
+import co.com.sofka.questions.security.collections.UserMajor;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,14 +22,12 @@ public class JwtProvider {
     private Integer expiration;
 
     public String generateToken(Authentication authentication) {
-        String userName = authentication.getName();
-        Date currentDate = new Date();
-        Date expirationDate = new Date(currentDate.getTime() + expiration);
-
-        String token = Jwts.builder().setSubject(userName).setIssuedAt(new Date()).setExpiration(expirationDate)
-                        .signWith(SignatureAlgorithm.HS512,secret).compact();
-
-        return token;
+        UserMajor userMajor = (UserMajor) authentication.getPrincipal();
+        return Jwts.builder().setSubject(userMajor.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(new Date().getTime() + expiration * 1000))
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
     }
 
     public String getUserNameFromToken(String token) {
