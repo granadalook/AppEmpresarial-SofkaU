@@ -42,16 +42,9 @@ export class AuthServiceService {
     });
   }
   loginRegistre(newUser: NewUser) {
-      const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-      observe: 'response' as 'response',
-    };
     return this.http.post(
       `${environment.authURL}${environment.Create}`,
-      newUser,
-      httpOptions
+      newUser
     );
   }
   getUserLogged() {

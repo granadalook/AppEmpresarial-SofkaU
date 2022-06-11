@@ -6,14 +6,6 @@
     <div class="card-header">
       <B>LOGIN</B>
       <i class="pi pi-user" style="font-size: 1rem; margin-left: 10px"></i>
-      <p-progressSpinner
-        *ngIf="mostrar"
-        [style]="{ width: '20', height: '20px' }"
-        styleClass="custom-spinner"
-        strokeWidth="8"
-        fill="var(--surface-ground)"
-        animationDuration=".5s"
-      ></p-progressSpinner>
     </div>
 
     <div class="card-body" style="margin: 20px">
@@ -78,14 +70,6 @@
   [draggable]="false"
   [resizable]="false"
 >
-  <p-progressSpinner
-    *ngIf="mostrar2"
-    [style]="{ width: '20', height: '20px' }"
-    styleClass="custom-spinner"
-    strokeWidth="8"
-    fill="var(--surface-ground)"
-    animationDuration=".5s"
-  ></p-progressSpinner>
   <p>Llegará un email si tu correo se encuentra registrado</p>
   <form [formGroup]="form2">
     <div class="col-12 md:col-4">
