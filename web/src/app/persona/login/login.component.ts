@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { MessageService, Message } from 'primeng/api';
 import { LoginUser } from 'src/app/models/loginUser';
 import { AuthServiceService } from 'src/app/Service/authService/auth-service.service';
@@ -15,12 +16,15 @@ import { TokenServiceService } from 'src/app/Service/tokenService/token-service.
 export class LoginComponent implements OnInit {
   mostrar: Boolean = false;
   mostrar2: Boolean = false;
+  isLogged: boolean = false;
+  isLoginFail: boolean = false;
   val1: number = 3;
   displayModal: boolean = false;
   userName?: string;
   password?: string;
   loginUser: LoginUser;
   roles: string[] = [];
+  errMsj: string = '';
 
   public form: FormGroup = this.formBuilder.group({
     userName: ['', [Validators.required]],
@@ -36,6 +40,7 @@ export class LoginComponent implements OnInit {
     private messageService: MessageService,
     private authService: AuthServiceService,
     private tokenService: TokenServiceService,
+    private toastr: ToastrService,
     private route: Router
   ) {
     this.loginUser = {
@@ -46,34 +51,65 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.tokenService.getToken()) {
+      this.isLogged = true;
+      this.isLoginFail = false;
       this.roles = this.tokenService.getAuthorities();
     }
   }
 
-  /*  ingresar() {
-    this.mostrar = !this.mostrar;
-    this.authService
-      .login(this.form.value.userName, this.form.value.password)
-      .then((res) => {
-        if (res == undefined) {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Rectifique los datos',
-            detail: 'Clave o Usuario incorrecto, Intente de Nuevo',
+  ingresar() {
+    this.authService.login(this.loginUser).subscribe(
+      (data) => {
+        if (data == undefined) {
+          this.toastr.success('fail ', 'OK', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center',
           });
         } else {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Bienvenido',
-            detail: 'Disfruta de tu estadía',
-          });
+          this.isLogged = true;
+          this.tokenService.setUserName(data.userName);
+          this.tokenService.setAuthorities(data.authorities);
+          this.roles = data.authorities;
+          this.showSuccess();
+          /*  this.toastr.success('Bienvenido ' + data.userName, 'OK', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center',
+          }); */
           this.route.navigate(['preguntas']);
         }
 
-        this.mostrar = !this.mostrar;
-      });
+        /*    this.messageService.add({
+          severity: 'success',
+          summary: 'Bienvenido ' + data.userName,
+          detail: 'Gracias por visitarnos',
+        }); */
+        /*   if (res == undefined) {
+          this.messageService.add({
+          severity: 'error',
+          summary: 'Rectifique los datos',
+          detail: 'Clave o Usuario incorrecto, Intente de Nuevo',
+        }); console.log('no login');
+      } else {
+         this.messageService.add({
+          severity: 'success',
+          summary: 'Bienvenido',
+          detail: 'Disfruta de tu estadía',
+        }); console.log(' login');
+        this.route.navigate(['preguntas']);
+      }
+      this.mostrar = !this.mostrar; */
+      },
+      (err) => {
+        this.isLogged = false;
+        this.errMsj = err.error.message;
+        this.toastr.success('Bienvenido ', 'OK', {
+          timeOut: 3000,
+          positionClass: 'toast-top-center',
+        });
+      }
+    );
   }
-  ingresarGoogle() {
+  /*  ingresarGoogle() {
     this.mostrar = !this.mostrar;
     this.authService
       .loginGoogle(this.form.value.email, this.form.value.password)
@@ -96,11 +132,11 @@ export class LoginComponent implements OnInit {
         }
         this.mostrar = !this.mostrar;
       });
-  }
-  getUserLogged() {
+  } */
+  /*  getUserLogged() {
     this.authService.getUserLogged().subscribe((res) => {});
   }
-
+ */
   preguntasHome() {
     this.route.navigate(['preguntas']);
   }
@@ -128,7 +164,7 @@ export class LoginComponent implements OnInit {
     this.displayModal = true;
   }
 
-  recuperarEmail() {
+  /*  recuperarEmail() {
     try {
       this.mostrar2 = !this.mostrar2;
       this.authService.resetPassword(this.form2.value.email).then((res) => {
@@ -142,10 +178,4 @@ export class LoginComponent implements OnInit {
       this.mostrar2 = !this.mostrar2;
     } catch (error) {}
   } */
-
-  onLogin(): void {
-    this.authService.login(this.loginUser).subscribe((data) => {
-      console.log(data.authorities, data.userName, data.token, data.bearer);
-    });
-  }
 }

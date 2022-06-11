@@ -91,3 +91,4 @@ export class RegistroComponent implements OnInit {
     this.mostrar = !this.mostrar;
   }
 }
+ 

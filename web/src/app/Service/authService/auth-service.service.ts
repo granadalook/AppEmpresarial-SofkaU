@@ -9,6 +9,15 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class AuthServiceService {
+  loginGoogle(email: any, password: any) {
+    throw new Error('Method not implemented.');
+  }
+  getUserLogged() {
+    throw new Error('Method not implemented.');
+  }
+  resetPassword(email: any) {
+    throw new Error('Method not implemented.');
+  }
   constructor(private http: HttpClient) {}
 
   login(loginUser: LoginUser): Observable<Jwt> {
