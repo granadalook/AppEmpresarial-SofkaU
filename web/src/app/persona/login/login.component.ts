@@ -71,10 +71,10 @@ export class LoginComponent implements OnInit {
           this.tokenService.setAuthorities(data.authorities);
           this.roles = data.authorities;
           this.showSuccess();
-          /*  this.toastr.success('Bienvenido ' + data.userName, 'OK', {
+          this.toastr.success('Bienvenido ' + data.userName, 'OK', {
             timeOut: 3000,
             positionClass: 'toast-top-center',
-          }); */
+          }); 
           this.route.navigate(['preguntas']);
         }
 
@@ -102,9 +102,8 @@ export class LoginComponent implements OnInit {
       (err) => {
         this.isLogged = false;
         this.errMsj = err.error.message;
-        this.toastr.success('Bienvenido ', 'OK', {
-          timeOut: 3000,
-          positionClass: 'toast-top-center',
+        this.toastr.error(this.errMsj, 'Fail', {
+          timeOut: 3000,  positionClass: 'toast-top-center',
         });
       }
     );
