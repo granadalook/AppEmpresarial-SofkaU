@@ -14,4 +14,5 @@ export const environment = {
   production: true,
   authURL: 'http://localhost:8080/api/auth/',
   loginEnd: 'login',
+  Create: 'create',
 };

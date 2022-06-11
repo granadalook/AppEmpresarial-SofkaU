@@ -70,11 +70,10 @@ export class LoginComponent implements OnInit {
           this.tokenService.setUserName(data.userName);
           this.tokenService.setAuthorities(data.authorities);
           this.roles = data.authorities;
-          this.showSuccess();
           this.toastr.success('Bienvenido ' + data.userName, 'OK', {
             timeOut: 3000,
             positionClass: 'toast-top-center',
-          }); 
+          });
           this.route.navigate(['preguntas']);
         }
 
@@ -103,39 +102,17 @@ export class LoginComponent implements OnInit {
         this.isLogged = false;
         this.errMsj = err.error.message;
         this.toastr.error(this.errMsj, 'Fail', {
-          timeOut: 3000,  positionClass: 'toast-top-center',
+          timeOut: 3000,
+          positionClass: 'toast-top-center',
         });
       }
     );
   }
-  /*  ingresarGoogle() {
-    this.mostrar = !this.mostrar;
-    this.authService
-      .loginGoogle(this.form.value.email, this.form.value.password)
-      .then((res) => {
-        if (res) {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Bienvenido',
-            detail: 'Disfruta de tu estadía',
-          });
-          setTimeout(() => {
-            this.route.navigate(['preguntas']);
-          }, 3000);
-        } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Rectifique los datos',
-            detail: 'Clave o Usuario incorrecto, Intente de Nuevo',
-          });
-        }
-        this.mostrar = !this.mostrar;
-      });
-  } */
+  
   /*  getUserLogged() {
     this.authService.getUserLogged().subscribe((res) => {});
   }
- */
+
   preguntasHome() {
     this.route.navigate(['preguntas']);
   }
