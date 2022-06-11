@@ -59,6 +59,7 @@ export class LoginComponent implements OnInit {
         this.isLogged = true;
         this.tokenService.setUserName(data.userName);
         this.tokenService.setAuthorities(data.authorities);
+        this.tokenService.setToken(data.token);
         this.roles = data.authorities;
         this.messageService.add({
           severity: 'success',
