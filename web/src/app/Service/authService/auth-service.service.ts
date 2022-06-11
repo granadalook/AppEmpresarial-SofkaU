@@ -1,4 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Jwt } from 'src/app/models/Jwt';
@@ -13,11 +17,13 @@ import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
 import { User } from '../../models/user';
 import { NewUser } from 'src/app/models/newUser';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthServiceService {
   userData: any;
+
   constructor(
     private http: HttpClient,
     public afauth: AngularFireAuth,
@@ -36,9 +42,16 @@ export class AuthServiceService {
     });
   }
   loginRegistre(newUser: NewUser) {
-    return this.http.post<NewUser>(
+      const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      observe: 'response' as 'response',
+    };
+    return this.http.post(
       `${environment.authURL}${environment.Create}`,
-      newUser
+      newUser,
+      httpOptions
     );
   }
   getUserLogged() {
@@ -47,7 +60,6 @@ export class AuthServiceService {
   resetPassword(email: any) {
     throw new Error('Method not implemented.');
   }
-
   login(loginUser: LoginUser): Observable<Jwt> {
     return this.http.post<Jwt>(
       `${environment.authURL}${environment.loginEnd}`,

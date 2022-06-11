@@ -63,7 +63,7 @@ public class AuthController {
         roles.add("ROLE_ADMIN");
         user.setRoles(roles);
         userService.save(user);
-        return new ResponseEntity<>("Usuario registrado exitosamente", HttpStatus.CREATED);
+        return new ResponseEntity<>("Usuario registrado exitosamente", HttpStatus.OK);
     }
 
     @CrossOrigin

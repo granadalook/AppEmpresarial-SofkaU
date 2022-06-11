@@ -1,10 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
 import { NewUser } from 'src/app/models/newUser';
 import { AuthServiceService } from 'src/app/Service/authService/auth-service.service';
-
 
 @Component({
   selector: 'app-registro',
@@ -14,11 +14,10 @@ import { AuthServiceService } from 'src/app/Service/authService/auth-service.ser
 })
 export class RegistroComponent implements OnInit {
   newUser: NewUser;
-  mostrar: Boolean = false;
   val1: number = 3;
   userName?: string;
-  name?: string;
   password?: string;
+  status?: number;
 
   public form: FormGroup = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -33,7 +32,6 @@ export class RegistroComponent implements OnInit {
     private route: Router
   ) {
     this.newUser = {
-      name: '',
       userName: '',
       password: '',
     };
@@ -42,26 +40,30 @@ export class RegistroComponent implements OnInit {
   ngOnInit(): void {}
 
   registrar() {
-    this.mostrar = !this.mostrar;
-    this.authService.loginRegistre(this.newUser).subscribe((res) => {
-      if (res) {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Bienvenido',
-          detail: 'Disfruta de tu estadía',
-        });
-        setTimeout(() => {
-          this.route.navigate(['preguntas']);
-        }, 3000);
-      } else {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Rectifique los datos',
-          detail: 'Clave o Usuario incorrecto, Intente de Nuevo',
-        });
+    this.authService.loginRegistre(this.newUser).subscribe(
+      (res) => {},
+      (err) => {
+        console.log('status error--->' + err.status);
+        this.status = err.status;
+        if (this.status === 200) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Bienvenido',
+            detail: 'Disfruta de tu estadía',
+          });
+          setTimeout(() => {
+            this.route.navigate(['preguntas']);
+          }, 3000);
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Rectifique los datos',
+            detail: 'Clave o Usuario incorrecto, Intente de Nuevo',
+          });
+          setTimeout(() => {}, 3000);
+        }
       }
-      this.mostrar = !this.mostrar;
-    });
+    );
   }
   /* ingresarGoogle() {
     this.mostrar = !this.mostrar;
@@ -93,9 +95,5 @@ export class RegistroComponent implements OnInit {
       summary: 'Info',
       detail: 'Message Content',
     });
-  }
-
-  spinner() {
-    this.mostrar = !this.mostrar;
   }
 }
