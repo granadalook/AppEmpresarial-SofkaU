@@ -41,7 +41,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                //auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 //establecemos la seguridad
                 SecurityContextHolder.getContext().setAuthentication(auth);
@@ -54,9 +54,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     //Bearer token de acceso
     private String getToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer"))
-            return bearerToken.substring(7,bearerToken.length());
+        String header = request.getHeader("Authorization");
+        if (header != null && header.startsWith("Bearer"))
+            return header.replace("Bearer ", "");
         return null;
     }
 }

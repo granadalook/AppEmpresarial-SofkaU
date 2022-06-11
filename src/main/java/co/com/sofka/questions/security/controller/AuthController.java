@@ -54,8 +54,8 @@ public class AuthController {
     public ResponseEntity<?> create(@Valid @RequestBody NewUser newUser, BindingResult bindingResult) {
         if(bindingResult.hasErrors())
             return new ResponseEntity("email invalido o campos mal diligenciados", HttpStatus.BAD_REQUEST);
-        /*if(userService.existsByUserName(newUser.getUserName()))
-            return new ResponseEntity<>("Usuario ya existe", HttpStatus.BAD_REQUEST);*/
+        if(userService.existsByUserName(newUser.getUserName()))
+            return new ResponseEntity<>("Usuario ya existe", HttpStatus.BAD_REQUEST);
 
         User user = new User(newUser.getUserName(), passwordEncoder.encode(newUser.getPassword()));
 
