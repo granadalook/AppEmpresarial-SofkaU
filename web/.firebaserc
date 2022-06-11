@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "app-empresarial-a3b09": {
+      "hosting": {
+        "reto_sofka": [
+          "app-empresarial-a3b09"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "app-empresarial-a3b09"
+  }
+}

@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { MessageService, Message } from 'primeng/api';
-import { ServiceService } from 'src/app/Service/service.service';
+import { LoginUser } from 'src/app/models/loginUser';
+import { AuthServiceService } from 'src/app/Service/authService/auth-service.service';
+import { TokenServiceService } from 'src/app/Service/tokenService/token-service.service';
 
 @Component({
   selector: 'app-login',
@@ -13,86 +16,106 @@ import { ServiceService } from 'src/app/Service/service.service';
 export class LoginComponent implements OnInit {
   mostrar: Boolean = false;
   mostrar2: Boolean = false;
+  isLogged: boolean = false;
+  isLoginFail: boolean = false;
   val1: number = 3;
   displayModal: boolean = false;
-  email: any = '';
+  userName?: string;
+  password?: string;
+  loginUser: LoginUser;
+  roles: string[] = [];
+  errMsj: string = '';
 
   public form: FormGroup = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(10)]],
+    userName: ['', [Validators.required]],
+    password: ['', [Validators.required]],
     rating: ['', []],
   });
   public form2: FormGroup = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
+    userName: ['', [Validators.required]],
   });
 
   constructor(
     private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private authService: ServiceService,
+    private authService: AuthServiceService,
+    private tokenService: TokenServiceService,
+    private toastr: ToastrService,
     private route: Router
-  ) {}
+  ) {
+    this.loginUser = {
+      userName: '',
+      password: '',
+    };
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.tokenService.getToken()) {
+      this.isLogged = true;
+      this.isLoginFail = false;
+      this.roles = this.tokenService.getAuthorities();
+    }
+  }
 
   ingresar() {
-    this.mostrar = !this.mostrar;
-    this.authService
-      .login(this.form.value.email, this.form.value.password)
-      .then((res) => {       
-        if (res == undefined) {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Rectifique los datos',
-            detail: 'Clave o Usuario incorrecto, Intente de Nuevo',
+    this.authService.login(this.loginUser).subscribe(
+      (data) => {
+        if (data == undefined) {
+          this.toastr.success('fail ', 'OK', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center',
           });
         } else {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Bienvenido',
-            detail: 'Disfruta de tu estadía',
+          this.isLogged = true;
+          this.tokenService.setUserName(data.userName);
+          this.tokenService.setAuthorities(data.authorities);
+          this.roles = data.authorities;
+          this.toastr.success('Bienvenido ' + data.userName, 'OK', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center',
           });
           this.route.navigate(['preguntas']);
         }
 
-        this.mostrar = !this.mostrar;
-      });
-  }
-  ingresarGoogle() {
-    this.mostrar = !this.mostrar;       
-    this.authService
-      .loginGoogle(this.form.value.email, this.form.value.password)
-      .then((res) => {
-        if (res) {
+        /*    this.messageService.add({
+          severity: 'success',
+          summary: 'Bienvenido ' + data.userName,
+          detail: 'Gracias por visitarnos',
+        }); */
+        /*   if (res == undefined) {
           this.messageService.add({
-            severity: 'success',
-            summary: 'Bienvenido',
-            detail: 'Disfruta de tu estadía',
-          });
-          setTimeout(() => {
-            this.route.navigate(['preguntas']);
-          }, 3000);
+          severity: 'error',
+          summary: 'Rectifique los datos',
+          detail: 'Clave o Usuario incorrecto, Intente de Nuevo',
+        }); console.log('no login');
+      } else {
+         this.messageService.add({
+          severity: 'success',
+          summary: 'Bienvenido',
+          detail: 'Disfruta de tu estadía',
+        }); console.log(' login');
+        this.route.navigate(['preguntas']);
+      }
+      this.mostrar = !this.mostrar; */
+      },
+      (err) => {
+        this.isLogged = false;
+        this.errMsj = err.error.message;
+        this.toastr.error(this.errMsj, 'Fail', {
+          timeOut: 3000,
+          positionClass: 'toast-top-center',
+        });
+      }
+    );
+  }
+  
+  /*  getUserLogged() {
+    this.authService.getUserLogged().subscribe((res) => {});
+  }
 
-        } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Rectifique los datos',
-            detail: 'Clave o Usuario incorrecto, Intente de Nuevo',
-          });
-          
-        }
-        this.mostrar = !this.mostrar;
-      });
-  }
-  getUserLogged() {
-    this.authService.getUserLogged().subscribe((res) => {     
-    });
-  }
- 
   preguntasHome() {
     this.route.navigate(['preguntas']);
   }
-
   //TODO: Utilidades
   showSuccess() {
     this.messageService.add({
@@ -117,7 +140,7 @@ export class LoginComponent implements OnInit {
     this.displayModal = true;
   }
 
-  recuperarEmail() {
+  /*  recuperarEmail() {
     try {
       this.mostrar2 = !this.mostrar2;
       this.authService.resetPassword(this.form2.value.email).then((res) => {
@@ -130,5 +153,5 @@ export class LoginComponent implements OnInit {
       });
       this.mostrar2 = !this.mostrar2;
     } catch (error) {}
-  }
+  } */
 }
