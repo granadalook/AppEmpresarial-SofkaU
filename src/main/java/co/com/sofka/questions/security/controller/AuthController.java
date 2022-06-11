@@ -2,9 +2,10 @@ package co.com.sofka.questions.security.controller;
 
 import co.com.sofka.questions.security.collections.Rol;
 import co.com.sofka.questions.security.collections.User;
-import co.com.sofka.questions.security.dto.JwtDto;
 import co.com.sofka.questions.security.dto.LoginUser;
-import co.com.sofka.questions.security.dto.Mensaje;
+import co.com.sofka.questions.security.jwt.JWTAuthResponseDto;
+import co.com.sofka.questions.security.repositories.RolRepository;
+import co.com.sofka.questions.security.repositories.UserRepository;
 import co.com.sofka.questions.security.dto.NewUser;
 import co.com.sofka.questions.security.jwt.JwtProvider;
 import co.com.sofka.questions.security.services.RolService;
@@ -16,19 +17,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.validation.Valid;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 
 @RestController
-@RequestMapping("/api/auth/")
+@RequestMapping("/api/auth")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
 
@@ -44,41 +43,36 @@ public class AuthController {
     @Autowired(required = true)
     RolService rolService;
 
-
     @Autowired(required = true)
     JwtProvider jwtProvider;
 
     @CrossOrigin
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public ResponseEntity<?> create(@RequestBody NewUser newUser) {
+        if(userService.existsByUserName(newUser.getUsername()))
+            return new ResponseEntity<>("Ese usuario ya existe", HttpStatus.BAD_REQUEST);
 
-    @PostMapping("/create")
-    public ResponseEntity<?> create(@Valid @RequestBody NewUser newUser, BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            return new ResponseEntity(new Mensaje("Campos mal diligenciados o email inválido"), HttpStatus.BAD_REQUEST);
-        if (userService.existsByUserName(newUser.getUserName()))
-            return new ResponseEntity(new Mensaje("Usuario ya existe"), HttpStatus.BAD_REQUEST);
-        if (userService.existsByEmail(newUser.getEmail()))
-            return new ResponseEntity(new Mensaje("Email ya existe"), HttpStatus.BAD_REQUEST);
-        User user =
-                new User(newUser.getName(), newUser.getUserName(), newUser.getEmail(),
-                        passwordEncoder.encode(newUser.getPassword()));
+        User user = new User(newUser.getUsername(), passwordEncoder.encode(newUser.getPassword()));
+
         Set<Rol> roles = new HashSet<>();
-        roles.add(rolService.getByRolName("ADMIN").get());
+        roles.add(rolService.getByRolName("ROLE_ADMIN"));
         user.setRoles(roles);
+
         userService.saveUser(user);
-        return new ResponseEntity(new Mensaje("Usuario guardado con exito."), HttpStatus.CREATED);
+        return new ResponseEntity<>("Usuario registrado exitosamente", HttpStatus.CREATED);
     }
 
     @CrossOrigin
-    @PostMapping("/login")
-    public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUser loginUser, BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
-            return new ResponseEntity(new Mensaje("campos mal puestos"), HttpStatus.BAD_REQUEST);
-        Authentication authentication =
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getUserName(), loginUser.getPassword()));
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<JWTAuthResponseDto> login(@RequestBody LoginUser loginUser) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getUserName(), loginUser.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtProvider.generateToken(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities());
-        return new ResponseEntity(jwtDto, HttpStatus.OK);
+
+        //obtenemos el token del jwtTokenProvider
+        String token = jwtProvider.generateToken(authentication);
+
+        return ResponseEntity.ok(new JWTAuthResponseDto(token));
     }
+
+
 }

@@ -1,4 +1,4 @@
-package co.com.sofka.questions.security.dto;
+package co.com.sofka.questions.security.util;
 
 public class Mensaje {
 
