@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { MessageService, Message } from 'primeng/api';
 import { LoginUser } from 'src/app/models/loginUser';
 import { AuthServiceService } from 'src/app/Service/authService/auth-service.service';
@@ -14,11 +13,9 @@ import { TokenServiceService } from 'src/app/Service/tokenService/token-service.
   providers: [MessageService],
 })
 export class LoginComponent implements OnInit {
-  mostrar: Boolean = false;
-  mostrar2: Boolean = false;
   isLogged: boolean = false;
   isLoginFail: boolean = false;
-  val1: number = 3;
+  // val1: number = 3;
   displayModal: boolean = false;
   userName?: string;
   password?: string;
@@ -40,7 +37,6 @@ export class LoginComponent implements OnInit {
     private messageService: MessageService,
     private authService: AuthServiceService,
     private tokenService: TokenServiceService,
-    private toastr: ToastrService,
     private route: Router
   ) {
     this.loginUser = {
@@ -60,55 +56,31 @@ export class LoginComponent implements OnInit {
   ingresar() {
     this.authService.login(this.loginUser).subscribe(
       (data) => {
-        if (data == undefined) {
-          this.toastr.success('fail ', 'OK', {
-            timeOut: 3000,
-            positionClass: 'toast-top-center',
-          });
-        } else {
-          this.isLogged = true;
-          this.tokenService.setUserName(data.userName);
-          this.tokenService.setAuthorities(data.authorities);
-          this.roles = data.authorities;
-          this.toastr.success('Bienvenido ' + data.userName, 'OK', {
-            timeOut: 3000,
-            positionClass: 'toast-top-center',
-          });
-          this.route.navigate(['preguntas']);
-        }
-
-        /*    this.messageService.add({
+        this.isLogged = true;
+        this.tokenService.setUserName(data.userName);
+        this.tokenService.setAuthorities(data.authorities);
+        this.tokenService.setToken(data.token);
+        this.roles = data.authorities;
+        this.messageService.add({
           severity: 'success',
           summary: 'Bienvenido ' + data.userName,
           detail: 'Gracias por visitarnos',
-        }); */
-        /*   if (res == undefined) {
-          this.messageService.add({
+        }),
+          setTimeout(() => {
+            this.route.navigate(['preguntas']);
+          }, 3000);
+      },
+      (err) => {
+        this.messageService.add({
           severity: 'error',
           summary: 'Rectifique los datos',
           detail: 'Clave o Usuario incorrecto, Intente de Nuevo',
-        }); console.log('no login');
-      } else {
-         this.messageService.add({
-          severity: 'success',
-          summary: 'Bienvenido',
-          detail: 'Disfruta de tu estadía',
-        }); console.log(' login');
-        this.route.navigate(['preguntas']);
-      }
-      this.mostrar = !this.mostrar; */
-      },
-      (err) => {
-        this.isLogged = false;
-        this.errMsj = err.error.message;
-        this.toastr.error(this.errMsj, 'Fail', {
-          timeOut: 3000,
-          positionClass: 'toast-top-center',
         });
+        setTimeout(() => {}, 3000);
       }
     );
   }
-  
+
   /*  getUserLogged() {
     this.authService.getUserLogged().subscribe((res) => {});
   }
@@ -116,6 +88,7 @@ export class LoginComponent implements OnInit {
   preguntasHome() {
     this.route.navigate(['preguntas']);
   }
+
   //TODO: Utilidades
   showSuccess() {
     this.messageService.add({
@@ -124,6 +97,7 @@ export class LoginComponent implements OnInit {
       detail: 'Message Content',
     });
   }
+
   showInfo() {
     this.messageService.add({
       severity: 'info',
@@ -131,12 +105,8 @@ export class LoginComponent implements OnInit {
       detail: 'Message Content',
     });
   }
-  showError() {}
-  spinner() {
-    this.mostrar = !this.mostrar;
-  }
 
-  showModalDialog() {
+   showModalDialog() {
     this.displayModal = true;
   }
 
