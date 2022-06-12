@@ -1,6 +1,7 @@
 package co.com.sofka.questions.security.jwt;
 
 import co.com.sofka.questions.security.services.UserDetailsServiceImpl;
+import io.jsonwebtoken.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             String token = getToken(request);
             if (token != null && jwtProvider.validateToken(token)) {
                 //obtenemos el username del token
-                String userName = jwtProvider.getUserNameFromToken(token);
+                String userName = String.valueOf(jwtProvider.getUserNameFromToken(token));
 
                 //cargamos el usuario asociado al token
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userName);

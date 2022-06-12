@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 
+import javax.xml.bind.DatatypeConverter;
 import java.util.Date;
 
 @Component
@@ -30,8 +31,15 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String getUserNameFromToken(String token) {
+   /* public String getUserNameFromToken(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJwt(token).getBody().getSubject();
+    }*/
+
+    public Claims getUserNameFromToken(String token) throws ExpiredJwtException,
+            UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException {
+        return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(secret))
+                .parseClaimsJwt(token)
+                .getBody();
     }
 
     public boolean validateToken(String token) {
