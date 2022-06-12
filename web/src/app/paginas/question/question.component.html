@@ -14,7 +14,6 @@
             type="text"
             placeholder="Tipo de pregunta"
             name="type"
-            [(ngModel)]="question.type"
             required
           />
           <input
@@ -23,7 +22,6 @@
             type="text"
             placeholder="Categorio de la Pregunta"
             name="category"
-            [(ngModel)]="question.category"
             required
           />
 
@@ -33,7 +31,6 @@
               placeholder="Leave a comment here"
               id="question"
               style="height: 150px"
-              [(ngModel)]="question.question"
             ></textarea>
             <label for="floatingTextarea">Pregunta</label>
 
@@ -41,7 +38,6 @@
           </div>
           <button
             pButton
-            (click)="saveQuestion(question)"
             pRipple
             type="button"
             label="Realizar Pregunta"
