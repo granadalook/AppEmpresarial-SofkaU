@@ -27,6 +27,7 @@ import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+import { RecuperarPasswordComponent } from './persona/recuperar-password/recuperar-password.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
     QuestionComponent,
     RequestionComponent,
     EditComponent,
+    RecuperarPasswordComponent,
   ],
   imports: [
     BrowserModule,

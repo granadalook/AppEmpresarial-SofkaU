@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
 import { User } from '../../models/user';
 import { NewUser } from 'src/app/models/newUser';
+import { authInstanceFactory } from '@angular/fire/auth/auth.module';
 
 @Injectable({
   providedIn: 'root',
@@ -27,36 +28,54 @@ export class AuthServiceService {
   constructor(
     private http: HttpClient,
     public afauth: AngularFireAuth,
+    private auth: AngularFirestore,
     public store: AngularFirestore,
     public router: Router
   ) {
     this.afauth.authState.subscribe((user) => {
       if (user) {
         this.userData = user;
-        JSON.parse(localStorage.getItem('user')!);
-        localStorage.setItem('user', JSON.stringify(this.userData));
+        JSON.parse(sessionStorage.getItem('user')!);
+        sessionStorage.setItem('user', JSON.stringify(this.userData));
       } else {
-        JSON.parse(localStorage.getItem('user')!);
-        localStorage.setItem('user', 'null');
+        JSON.parse(sessionStorage.getItem('user')!);
+        sessionStorage.setItem('user', 'null');
       }
-    });
+    }); 
   }
+
   loginRegistre(newUser: NewUser) {
     return this.http.post(
       `${environment.authURL}${environment.Create}`,
       newUser
     );
+    
   }
-  getUserLogged() {
-    throw new Error('Method not implemented.');
+
+  async resetPassword(email: string) {
+    try {
+      return this.afauth.sendPasswordResetEmail(email);
+    } catch (error) {
+      console.log(error);
+    }
   }
-  resetPassword(email: any) {
-    throw new Error('Method not implemented.');
+
+  async loginGoogle(email: string, password: string) {
+    try {
+      return await this.afauth
+        .signInWithPopup(new firebase.auth.GoogleAuthProvider())       
+    } catch (error) {
+      return null;
+    }
   }
+  
+
   login(loginUser: LoginUser): Observable<Jwt> {
     return this.http.post<Jwt>(
       `${environment.authURL}${environment.loginEnd}`,
       loginUser
     );
   }
+
+
 }
