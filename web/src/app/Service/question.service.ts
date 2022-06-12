@@ -12,9 +12,7 @@ export class QuestionService {
     throw new Error('Method not implemented.');
   }
 
-
-  private url: string = 'http://localhost:8080/';
-
+  private url: string = 'http://localhost:8080/auth/';
 
   constructor(private http: HttpClient) {}
 
