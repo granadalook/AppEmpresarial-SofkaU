@@ -1,9 +1,8 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
-import { NewUser } from 'src/app/models/newUser';
+import { Userback } from 'src/app/models/Userback';
 import { AuthServiceService } from 'src/app/Service/authService/auth-service.service';
 
 @Component({
@@ -13,7 +12,7 @@ import { AuthServiceService } from 'src/app/Service/authService/auth-service.ser
   providers: [MessageService],
 })
 export class RegistroComponent implements OnInit {
-  newUser: NewUser;
+  newUser: Userback;
   val1: number = 3;
   userName?: string;
   password?: string;
@@ -65,23 +64,6 @@ export class RegistroComponent implements OnInit {
       }
     );
   }
-  /* ingresarGoogle() {
-    this.mostrar = !this.mostrar;
-    this.authService
-      .loginGoogle(this.form.value.email, this.form.value.password)
-      .then((res) => {
-        this.mostrar = !this.mostrar;
-      });
-  }
-  getUserLogged() {
-    this.authService.getUserLogged().subscribe((res) => {});
-  }
-
-  preguntasHome() {
-    this.route.navigate(['preguntas']);
-  } */
-
-  //TODO: Utilidades
   showSuccess() {
     this.messageService.add({
       severity: 'success',

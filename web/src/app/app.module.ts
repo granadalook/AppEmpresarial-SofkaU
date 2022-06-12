@@ -30,7 +30,6 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { RecuperarPasswordComponent } from './persona/recuperar-password/recuperar-password.component';
 import { UpdateComponent } from './persona/update/update.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,7 +43,6 @@ import { UpdateComponent } from './persona/update/update.component';
     EditComponent,
     RecuperarPasswordComponent,
     UpdateComponent,
-  
   ],
   imports: [
     BrowserModule,
@@ -64,5 +62,6 @@ import { UpdateComponent } from './persona/update/update.component';
   ],
   providers: [],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}

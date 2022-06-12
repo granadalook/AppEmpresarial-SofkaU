@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthServiceService } from 'src/app/Service/authService/auth-service.service';
@@ -12,10 +12,15 @@ import { AuthServiceService } from 'src/app/Service/authService/auth-service.ser
 })
 export class RecuperarPasswordComponent implements OnInit {
   [x: string]: any;
-
-  userName = new FormControl('');
+  email: string = '';
+  enviado: boolean = true;
+  public form: FormGroup = this.formBuilder.group({
+    email: ['', [Validators.required, Validators.email]],
+    rating: ['', []],
+  });
 
   constructor(
+    private formBuilder: FormBuilder,
     private authSvc: AuthServiceService,
     private messageService: MessageService,
     private route: Router
@@ -25,10 +30,11 @@ export class RecuperarPasswordComponent implements OnInit {
 
   onReset() {
     try {
-      const email = this.userName.value;
-      this.authSvc.resetPassword(email);
-      window.alert('Email enviado, revisa tu bandeja de correo!');
-      this.route.navigate(['/login']);
+      this.authSvc.resetPassword(this.email);
+      this.enviado = false;
+      setTimeout(() => {
+        this.route.navigate(['/update']);
+      }, 5000);
     } catch (error) {
       console.log(error);
     }
