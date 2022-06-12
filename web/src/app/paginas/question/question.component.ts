@@ -17,7 +17,7 @@ import { ServiceService } from 'src/app/Service/service.service';
 })
 export class QuestionComponent implements OnInit {
   answers: AnswerI[] | undefined;
-  /*  question: answe = {
+ /*  question: answe = {
     id:
       this.authService.userData.uid == undefined
         ? ''
@@ -29,8 +29,8 @@ export class QuestionComponent implements OnInit {
     question: '',
     type: '',
     category: '',
-    answers:[null],
-    start: '2'
+    answers: [null],
+    start: '2',
   }; */
 
   constructor(
