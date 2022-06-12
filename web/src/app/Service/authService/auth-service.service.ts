@@ -39,6 +39,9 @@ export class AuthServiceService {
       }
     });
   }
+  getUserByUserName(userName:string){
+    this.http.get(userName)
+  }
 
   loginRegistre(newUser: NewUser) {
     this.afauth.createUserWithEmailAndPassword(

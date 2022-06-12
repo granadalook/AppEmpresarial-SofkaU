@@ -39,7 +39,7 @@ public class User {
         this.idUser = idUser;
     }
 
-    public String getUsername() {
+    public String getUserName() {
         return userName;
     }
 

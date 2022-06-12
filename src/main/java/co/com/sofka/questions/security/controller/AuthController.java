@@ -3,6 +3,7 @@ package co.com.sofka.questions.security.controller;
 import co.com.sofka.questions.security.collections.Rol;
 import co.com.sofka.questions.security.collections.User;
 import co.com.sofka.questions.security.dto.LoginUser;
+import co.com.sofka.questions.security.dto.UserDto;
 import co.com.sofka.questions.security.jwt.JWTAuthResponseDto;
 import co.com.sofka.questions.security.repositories.RolRepository;
 import co.com.sofka.questions.security.repositories.UserRepository;
@@ -18,6 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -65,6 +67,15 @@ public class AuthController {
         userService.save(user);
         return new ResponseEntity<>("Usuario registrado exitosamente", HttpStatus.OK);
     }
+    @CrossOrigin
+    @PostMapping("/user")
+       public  ResponseEntity<?> getUserByUserName(@Valid @RequestBody UserDto userDto){
+       User user = userService.getUserByUserName(userDto.getUserName());
+       user.setUsername(userDto.getUserName());
+       user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+       userService.save(user);
+        return new ResponseEntity<>("Usuario actualizado", HttpStatus.OK);
+    };
 
     @CrossOrigin
     @PostMapping("/login")

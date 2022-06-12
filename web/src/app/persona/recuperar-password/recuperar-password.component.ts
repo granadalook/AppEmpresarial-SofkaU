@@ -29,5 +29,4 @@ export class RecuperarPasswordComponent implements OnInit {
       console.log(error);
     }
   }
-
 }
