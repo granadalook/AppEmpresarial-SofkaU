@@ -68,24 +68,26 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated();
         http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);*/
-        /*http.cors().disable()
+        http.cors().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtEntryPoint)
                 .and().csrf().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests().antMatchers(HttpMethod.GET,"/api/getAll").permitAll()
+                .authorizeRequests().antMatchers("/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
+                //.antMatchers("/swagger-ui-custom/**").permitAll()
                 .anyRequest()
                 .authenticated();
-        http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);*/
-        http.csrf().disable()
+        http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        /*http.csrf().disable()
                 .addFilterAfter(new JwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/**").permitAll()
-                //.antMatchers("/api/auth/**").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/swagger-ui.html/**").permitAll()
+                .anyRequest().authenticated();*/
     }
 
 }
