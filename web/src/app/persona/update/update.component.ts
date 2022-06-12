@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-
-import { NewUser } from 'src/app/models/newUser';
+import { Userback } from 'src/app/models/Userback';
 import { UpdateService } from 'src/app/Service/updateService/update.service';
 
 @Component({
@@ -13,7 +12,7 @@ import { UpdateService } from 'src/app/Service/updateService/update.service';
   providers: [MessageService],
 })
 export class UpdateComponent implements OnInit {
-  updateUser: NewUser;
+  updateUser: Userback;
   userName?: string;
   password?: string;
 

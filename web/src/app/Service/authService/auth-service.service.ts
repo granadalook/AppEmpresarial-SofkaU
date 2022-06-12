@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Jwt } from 'src/app/models/Jwt';
-import { LoginUser } from 'src/app/models/loginUser';
 import { environment } from 'src/environments/environment';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
@@ -11,9 +10,8 @@ import {
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
-import { User } from '../../models/user';
-import { NewUser } from 'src/app/models/newUser';
 import { authInstanceFactory } from '@angular/fire/auth/auth.module';
+import { Userback } from 'src/app/models/Userback';
 
 @Injectable({
   providedIn: 'root',
@@ -39,11 +37,11 @@ export class AuthServiceService {
       }
     });
   }
-  getUserByUserName(userName:string){
-    this.http.get(userName)
+  getUserByUserName(userName: string) {
+    this.http.get(userName);
   }
 
-  loginRegistre(newUser: NewUser) {
+  loginRegistre(newUser: Userback) {
     this.afauth.createUserWithEmailAndPassword(
       newUser.userName,
       newUser.password
@@ -72,7 +70,7 @@ export class AuthServiceService {
     }
   }
 
-  login(loginUser: LoginUser): Observable<Jwt> {
+  login(loginUser: Userback): Observable<Jwt> {
     return this.http.post<Jwt>(
       `${environment.authURL}${environment.loginEnd}`,
       loginUser

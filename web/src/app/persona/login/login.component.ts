@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
-import { LoginUser } from 'src/app/models/loginUser';
+import { Userback } from 'src/app/models/Userback';
 import { AuthServiceService } from 'src/app/Service/authService/auth-service.service';
 import { TokenServiceService } from 'src/app/Service/tokenService/token-service.service';
 
@@ -15,11 +15,10 @@ import { TokenServiceService } from 'src/app/Service/tokenService/token-service.
 export class LoginComponent implements OnInit {
   isLogged: boolean = false;
   isLoginFail: boolean = false;
-  // val1: number = 3;
   displayModal: boolean = false;
   userName?: string;
   password?: string;
-  loginUser: LoginUser;
+  loginUser: Userback;
   roles: string[] = [];
   errMsj: string = '';
 
@@ -53,6 +52,10 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  navegar(){
+    this.route.navigate(['preguntas']);
+  }
+
   ingresar() {
     this.authService.login(this.loginUser).subscribe(
       (data) => {
@@ -80,48 +83,4 @@ export class LoginComponent implements OnInit {
       }
     );
   }
-
-  /*    getUserLogged() {
-    this.authService.getUserLogged().subscribe((res) => {});
-  }
-
-  preguntasHome() {
-    this.route.navigate(['preguntas']);
-  }
-
-  //TODO: Utilidades
-  showSuccess() {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: 'Message Content',
-    });
-  }
-
-  showInfo() {
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Info',
-      detail: 'Message Content',
-    });
-  }
-
-   showModalDialog() {
-    this.displayModal = true;
-  }
-
-   recuperarEmail() {
-    try {
-    
-      this.authService.resetPassword(this.form2.value.email).then((res) => {
-        this.displayModal = false;
-        this.messageService.add({
-          severity: 'success',
-          summary: '!Exitoso¡',
-          detail: 'Revisa tu bandeja de entrada',
-        });
-      });
-     
-    } catch (error) {}
-  } */
 }
