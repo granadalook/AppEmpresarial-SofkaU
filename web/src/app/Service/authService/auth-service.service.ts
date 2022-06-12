@@ -1,8 +1,4 @@
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Jwt } from 'src/app/models/Jwt';
@@ -42,6 +38,10 @@ export class AuthServiceService {
     });
   }
   loginRegistre(newUser: NewUser) {
+    this.afauth.createUserWithEmailAndPassword(
+      newUser.userName,
+      newUser.password
+    );
     return this.http.post(
       `${environment.authURL}${environment.Create}`,
       newUser
@@ -53,6 +53,7 @@ export class AuthServiceService {
   resetPassword(email: any) {
     throw new Error('Method not implemented.');
   }
+
   login(loginUser: LoginUser): Observable<Jwt> {
     return this.http.post<Jwt>(
       `${environment.authURL}${environment.loginEnd}`,

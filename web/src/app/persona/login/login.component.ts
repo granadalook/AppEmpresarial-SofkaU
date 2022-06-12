@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  /*  getUserLogged() {
+  /*    getUserLogged() {
     this.authService.getUserLogged().subscribe((res) => {});
   }
 
@@ -110,9 +110,9 @@ export class LoginComponent implements OnInit {
     this.displayModal = true;
   }
 
-  /*  recuperarEmail() {
+   recuperarEmail() {
     try {
-      this.mostrar2 = !this.mostrar2;
+    
       this.authService.resetPassword(this.form2.value.email).then((res) => {
         this.displayModal = false;
         this.messageService.add({
@@ -121,7 +121,7 @@ export class LoginComponent implements OnInit {
           detail: 'Revisa tu bandeja de entrada',
         });
       });
-      this.mostrar2 = !this.mostrar2;
+     
     } catch (error) {}
   } */
 }
