@@ -9,7 +9,6 @@ import { QuestionI } from 'src/app/models/question-i';
 import { QuestionService } from 'src/app/Service/question.service';
 import { ServiceService } from 'src/app/Service/service.service';
 
-
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
@@ -18,7 +17,7 @@ import { ServiceService } from 'src/app/Service/service.service';
 })
 export class QuestionComponent implements OnInit {
   answers: AnswerI[] | undefined;
-  question: answe = {
+  /*  question: answe = {
     id:
       this.authService.userData.uid == undefined
         ? ''
@@ -32,7 +31,7 @@ export class QuestionComponent implements OnInit {
     category: '',
     answers:[null],
     start: '2'
-  };
+  }; */
 
   constructor(
     private modalService: NgbModal,
@@ -50,36 +49,33 @@ export class QuestionComponent implements OnInit {
   }
 
   saveQuestion(question: QuestionI): void {
-    if(question.type && question.category){    
-     this.modalService.dismissAll();
-     this.services.saveQuestion(question).subscribe({
-       next: (v) => {       
-         if (v) {
-           this.messageService.add({
-             severity: 'success',
-             summary: 'Se ha agregado la pregunta',
-             
+    if (question.type && question.category) {
+      this.modalService.dismissAll();
+      this.services.saveQuestion(question).subscribe({
+        next: (v) => {
+          if (v) {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Se ha agregado la pregunta',
             });
             setTimeout(() => {
-            window.location.reload();
-          }, 2000);
-        } else {
-          
-        }
-      },
-      error: (e) =>
-      this.toastr.error(e.mesaje, 'Fail', {
-        timeOut: 3000,
-      }),
-      complete: () => console.info('complete'),
-    });
-  }else{
-   
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Rectifique los datos',
-      detail: '(Campos Vacios)-Intente de Nuevo',
-    });
-  }
+              window.location.reload();
+            }, 2000);
+          } else {
+          }
+        },
+        error: (e) =>
+          this.toastr.error(e.mesaje, 'Fail', {
+            timeOut: 3000,
+          }),
+        complete: () => console.info('complete'),
+      });
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Rectifique los datos',
+        detail: '(Campos Vacios)-Intente de Nuevo',
+      });
+    }
   }
 }

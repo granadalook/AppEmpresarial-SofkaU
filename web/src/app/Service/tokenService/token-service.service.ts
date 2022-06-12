@@ -41,6 +41,5 @@ export class TokenServiceService {
   }
   logOut(): void{
     window.sessionStorage.clear();
-
   }
 }

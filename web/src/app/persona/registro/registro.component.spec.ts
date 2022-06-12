@@ -1,4 +1,11 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AngularFireModule } from '@angular/fire/compat';
+import { FormBuilder } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { QuestionService } from 'src/app/Service/question.service';
+import { ServiceService } from 'src/app/Service/service.service';
+import { environment } from 'src/environments/environment';
 
 import { RegistroComponent } from './registro.component';
 
@@ -8,9 +15,14 @@ describe('RegistroComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RegistroComponent ]
-    })
-    .compileComponents();
+      imports: [
+        RouterTestingModule,
+        HttpClientModule,
+        AngularFireModule.initializeApp(environment.firebase),
+      ],
+      declarations: [RegistroComponent],
+      providers: [QuestionService, ServiceService, FormBuilder],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +31,7 @@ describe('RegistroComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Registro Component creado exitosamente', () => {
     expect(component).toBeTruthy();
   });
 });
