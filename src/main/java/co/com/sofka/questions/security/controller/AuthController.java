@@ -1,15 +1,11 @@
 package co.com.sofka.questions.security.controller;
 
-import co.com.sofka.questions.security.collections.Rol;
 import co.com.sofka.questions.security.collections.User;
 import co.com.sofka.questions.security.dto.LoginUser;
 import co.com.sofka.questions.security.dto.UserDto;
 import co.com.sofka.questions.security.jwt.JWTAuthResponseDto;
-import co.com.sofka.questions.security.repositories.RolRepository;
-import co.com.sofka.questions.security.repositories.UserRepository;
 import co.com.sofka.questions.security.dto.NewUser;
 import co.com.sofka.questions.security.jwt.JwtProvider;
-import co.com.sofka.questions.security.services.RolService;
 import co.com.sofka.questions.security.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,14 +15,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,9 +38,6 @@ public class AuthController {
 
     @Autowired(required = true)
     UserService userService;
-
-    @Autowired(required = true)
-    RolService rolService;
 
     @Autowired(required = true)
     JwtProvider jwtProvider;
