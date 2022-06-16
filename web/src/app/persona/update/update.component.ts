@@ -13,7 +13,7 @@ import { UpdateService } from 'src/app/Service/updateService/update.service';
 })
 export class UpdateComponent implements OnInit {
   updateUser: Userback;
-  userName?: string;
+  username?: string;
   password?: string;
 
   public form: FormGroup = this.formBuilder.group({
@@ -29,7 +29,7 @@ export class UpdateComponent implements OnInit {
     private route: Router
   ) {
     this.updateUser = {
-      userName: '',
+      username: '',
       password: '',
     };
   }

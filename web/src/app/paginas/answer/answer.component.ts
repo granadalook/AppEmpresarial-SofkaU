@@ -1,6 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AnswerI } from 'src/app/models/answer-i';
 import { QuestionService } from 'src/app/Service/question.service';
@@ -15,8 +13,6 @@ import { ServiceService } from 'src/app/Service/service.service';
   providers: [MessageService],
 })
 export class AnswerComponent implements OnInit {
-
-  
   public form: FormGroup = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(10)]],
@@ -27,8 +23,6 @@ export class AnswerComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private services: QuestionService,
-    private toastr: ToastrService,
-    private route: Router,
     private formBuilder: FormBuilder,
     private messageService: MessageService,
     public authService: ServiceService
@@ -48,28 +42,27 @@ export class AnswerComponent implements OnInit {
   }
 
   saveAnswer(): void {
-    this.answer.userId = this.item.userId;
-    this.answer.questionId = this.item.id;
-    this.services.saveAnswer(this.answer).subscribe({
-      next: (v) => {
-        if(v){
+    this.answer.userId = this.item.userId ;
+    this.answer.questionId = this.item.id ;
+       this.services.saveAnswer(this.answer).subscribe({
+      next: (exito) => {
+        if (exito) {
           this.modalService.dismissAll();
           this.messageService.add({
             severity: 'success',
-            summary: 'Se ha agregado la respuesta',
-            
-           });
-           setTimeout(() => {
-           window.location.reload();
-         }, 1000);
-        }        
+            summary: 'Se ha agregado la respuesta con exito',
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        }
       },
-      error: (e) =>
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Rectifique los datos',
-        detail: '(Campos Vacios)-Intente de Nuevo',
-      }),
+      error: (error) =>
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rectifique los datos',
+          detail: '(Campos Vacios)-Intente de Nuevo',
+        }),
       complete: () => console.info('complete'),
     });
   }

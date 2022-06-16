@@ -14,7 +14,7 @@ import { AuthServiceService } from 'src/app/Service/authService/auth-service.ser
 export class RegistroComponent implements OnInit {
   newUser: Userback;
   val1: number = 3;
-  userName?: string;
+  username?: string;
   password?: string;
   status?: number;
 
@@ -31,7 +31,7 @@ export class RegistroComponent implements OnInit {
     private route: Router
   ) {
     this.newUser = {
-      userName: '',
+      username: '',
       password: '',
     };
   }

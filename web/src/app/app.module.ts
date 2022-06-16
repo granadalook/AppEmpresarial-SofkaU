@@ -1,6 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PrimeNGModule } from './prime-ng/prime-ng.module';
@@ -30,9 +29,10 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { RecuperarPasswordComponent } from './persona/recuperar-password/recuperar-password.component';
 import { UpdateComponent } from './persona/update/update.component';
 
+
 @NgModule({
   declarations: [
-    AppComponent,
+     AppComponent,
     LoginComponent,
     PreguntasComponent,
     NavbarComponent,
@@ -42,7 +42,7 @@ import { UpdateComponent } from './persona/update/update.component';
     RequestionComponent,
     EditComponent,
     RecuperarPasswordComponent,
-    UpdateComponent,
+   UpdateComponent
   ],
   imports: [
     BrowserModule,

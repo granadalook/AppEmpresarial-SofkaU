@@ -1,4 +1,4 @@
 export interface Userback {
-  userName: string;
+  username: string;
   password: string;
 }

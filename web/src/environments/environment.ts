@@ -9,8 +9,16 @@ export const environment = {
     messagingSenderId: '758669605604',
   },
   production: true,
-  authURL: 'http://localhost:8080/api/auth/',
+  urlBaseLocal: 'http://localhost:8080/',
+  authURL: 'http://localhost:8080/',
   loginEnd: 'login',
-  Create: 'create',
+  //Create: 'create',
   update: 'user',
+  getAllQuestions: 'getAll',
+  countQuestions: 'countQuestions',
+  createQuestions: 'create',
+  saveAnswer: 'add',
+  getAnswer: 'get/',
 };
+
+/* authURL: 'https://empresarial-app.herokuapp.com/api/auth/', */

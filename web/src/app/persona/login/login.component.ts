@@ -16,19 +16,19 @@ export class LoginComponent implements OnInit {
   isLogged: boolean = false;
   isLoginFail: boolean = false;
   displayModal: boolean = false;
-  userName?: string;
+  username?: string;
   password?: string;
   loginUser: Userback;
   roles: string[] = [];
   errMsj: string = '';
 
   public form: FormGroup = this.formBuilder.group({
-    userName: ['', [Validators.required]],
+    username: ['', [Validators.required]],
     password: ['', [Validators.required]],
     rating: ['', []],
   });
   public form2: FormGroup = this.formBuilder.group({
-    userName: ['', [Validators.required]],
+    username: ['', [Validators.required]],
   });
 
   constructor(
@@ -39,8 +39,8 @@ export class LoginComponent implements OnInit {
     private route: Router
   ) {
     this.loginUser = {
-      userName: '',
-      password: '',
+      username: 'user',
+      password: 'user',
     };
   }
 
@@ -51,19 +51,27 @@ export class LoginComponent implements OnInit {
       this.roles = this.tokenService.getAuthorities();
     }
   }
+  Registrarme() {
+    this.route.navigate(['registro']);
+  }
+  ClickAqui() {
+    this.route.navigate(['reset']);
+  }
 
-  navegar(){
+  navegar() {
     this.route.navigate(['preguntas']);
   }
 
   ingresar() {
+    let parce = JSON.stringify(this.loginUser);
+    
     this.authService.login(this.loginUser).subscribe(
       (data) => {
         this.isLogged = true;
-        this.tokenService.setUserName(data.userName);
-        this.tokenService.setAuthorities(data.authorities);
+        //this.tokenService.setUserName(data.userName);
+        // this.tokenService.setAuthorities(data.authorities);
         this.tokenService.setToken(data.token);
-        this.roles = data.authorities;
+        //this.roles = data.authorities;
         this.messageService.add({
           severity: 'success',
           summary: 'Bienvenido ' + data.userName,

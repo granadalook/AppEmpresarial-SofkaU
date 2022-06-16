@@ -1,11 +1,13 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { MessageService } from 'primeng/api';
-import { answe } from 'src/app/models/answe';
+import { BehaviorSubject } from 'rxjs';
 import { AnswerI } from 'src/app/models/answer-i';
-import { QuestionI } from 'src/app/models/question-i';
+import { NewQuestion } from 'src/app/models/newQuestion';
 import { QuestionService } from 'src/app/Service/question.service';
 import { ServiceService } from 'src/app/Service/service.service';
 
@@ -17,30 +19,31 @@ import { ServiceService } from 'src/app/Service/service.service';
 })
 export class QuestionComponent implements OnInit {
   answers: AnswerI[] | undefined;
- /*  question: answe = {
-    id:
-      this.authService.userData.uid == undefined
-        ? ''
-        : this.authService.userData.uid,
-    userId:
-      this.authService.userData.uid == undefined
-        ? ''
-        : this.authService.userData.uid,
-    question: '',
-    type: '',
-    category: '',
-    answers: [null],
-    start: '2',
-  }; */
+  newQuestion: NewQuestion;
+  question?: string;
+  type?: string;
+  category?: string;
+
+  public form: FormGroup = this.formBuilder.group({
+    question: ['', [Validators.required]],
+    category: ['', [Validators.required]],
+    type: ['', [Validators.required]],
+  });
 
   constructor(
+    private formBuilder: FormBuilder,
     private modalService: NgbModal,
     private authService: ServiceService,
     private services: QuestionService,
-    private toastr: ToastrService,
-    private route: Router,
     private messageService: MessageService
-  ) {}
+  ) {
+    this.newQuestion = {
+      question: '',
+      category: '',
+      type: '',
+      userId: this.authService.userData.uid,
+    };
+  }
 
   ngOnInit(): void {}
 
@@ -48,34 +51,28 @@ export class QuestionComponent implements OnInit {
     this.modalService.open(content, { centered: true });
   }
 
-  saveQuestion(question: QuestionI): void {
-    if (question.type && question.category) {
-      this.modalService.dismissAll();
-      this.services.saveQuestion(question).subscribe({
-        next: (v) => {
-          if (v) {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Se ha agregado la pregunta',
-            });
+  saveQuestion() {
+    this.modalService.dismissAll();
+    this.services.saveQuestion(this.newQuestion).subscribe(
+      (data) => {},
+      (err: HttpResponse<string>) => {
+        if (err.status === 200) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Bienvenido ',
+            detail: 'pregunta guardada',
+          }),
             setTimeout(() => {
               window.location.reload();
-            }, 2000);
-          } else {
-          }
-        },
-        error: (e) =>
-          this.toastr.error(e.mesaje, 'Fail', {
-            timeOut: 3000,
-          }),
-        complete: () => console.info('complete'),
-      });
-    } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Rectifique los datos',
-        detail: '(Campos Vacios)-Intente de Nuevo',
-      });
-    }
+                         }, 3000);
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Rectifique los datos',
+            detail: '(Campos Vacios)-Intente de Nuevo',
+          });
+        }
+      }
+    );
   }
 }

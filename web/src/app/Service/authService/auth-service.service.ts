@@ -43,11 +43,12 @@ export class AuthServiceService {
 
   loginRegistre(newUser: Userback) {
     this.afauth.createUserWithEmailAndPassword(
-      newUser.userName,
+      newUser.username,
       newUser.password
     );
     return this.http.post(
-      `${environment.authURL}${environment.Create}`,
+      // se cambio la enviroment
+      `${environment.authURL}${environment.createQuestions}`,
       newUser
     );
   }
@@ -71,7 +72,7 @@ export class AuthServiceService {
   }
 
   login(loginUser: Userback): Observable<Jwt> {
-    return this.http.post<Jwt>(
+    return this.http.post<any>(
       `${environment.authURL}${environment.loginEnd}`,
       loginUser
     );

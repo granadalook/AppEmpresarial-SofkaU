@@ -14,7 +14,7 @@
           <input
             id="float-input"
             type="text"
-            [(ngModel)]="loginUser.userName"
+            [(ngModel)]="loginUser.username"
             formControlName="userName"
             pInputText
           />
@@ -42,8 +42,18 @@
         ></button>
         <br />
         <br />
-        <p>Aun no tienes cuenta? <a href="/registro">Registrate</a></p>
-        <p>¿Olvidaste tu contraseña? <a href="/reset">Clic aqui</a></p>
+        <p>
+          Aun no tienes cuenta?
+          <button class="btn btn-success" type="button" (click)="Registrarme()">
+            Registrarme
+          </button>
+        </p>
+        <p>
+          ¿Olvidaste tu contraseña?
+          <button class="btn btn-warning" type="button" (click)="ClickAqui()">
+            Click Aqui
+          </button>
+        </p>
       </form>
     </div>
 
@@ -62,3 +72,13 @@
     <i class="pi pi-user-edit" style="margin-top: 5px"></i>
   </button>
 </div>
+<button
+  type="button"
+  (click)="ingresar()"
+  pButton
+  pRipple
+  label="Preguntas"
+  class="p-button-danger mb-2"
+>
+  <i class="pi pi-user-edit" style="margin-top: 5px"></i> regusd
+</button>

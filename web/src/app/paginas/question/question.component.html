@@ -2,52 +2,59 @@
 <ng-template #content let-modal>
   <div class="modal-header"></div>
   <div class="modal-body">
-    <div class="container">
-      <div class="card text-center">
-        <div class="card-header font2">
-          <b>Realiza tu pregunta</b>
-        </div>
-        <div class="card-body p-4">
-          <input
-            id="type"
-            class="form-control m-2 font2"
-            type="text"
-            placeholder="Tipo de pregunta"
-            name="type"
-            required
-          />
-          <input
-            id="category"
-            class="form-control m-2 font2"
-            type="text"
-            placeholder="Categorio de la Pregunta"
-            name="category"
-            required
-          />
-
-          <div class="form-floating font2" style="margin-top: 20px">
-            <textarea
-              class="form-control m-2 font2"
-              placeholder="Leave a comment here"
-              id="question"
-              style="height: 150px"
-            ></textarea>
-            <label for="floatingTextarea">Pregunta</label>
-
-            <br />
+    <form [formGroup]="form">
+      <div class="container">
+        <div class="card text-center">
+          <div class="card-header font2">
+            <b>Realiza tu pregunta</b>
           </div>
-          <button
-            pButton
-            pRipple
-            type="button"
-            label="Realizar Pregunta"
-            class="p-button-outlined p-button-info"
-          ></button>
+          <div class="card-body p-4">
+            <input
+              id="type"
+              class="form-control m-2 font2"
+              type="text"
+              placeholder="Tipo de pregunta"
+              formControlName="type"
+              [(ngModel)]="newQuestion.type"
+              required
+            />
+            <input
+              id="category"
+              class="form-control m-2 font2"
+              type="text"
+              placeholder="Categorio de la Pregunta"
+              formControlName="category"
+              [(ngModel)]="newQuestion.category"
+              required
+            />
 
-          <hr />
+            <div class="form-floating font2" style="margin-top: 20px">
+              <textarea
+                class="form-control m-2 font2"
+                placeholder="Leave a comment here"
+                id="question"
+                style="height: 150px"
+                formControlName="question"
+                [(ngModel)]="newQuestion.question"
+              ></textarea>
+              <label for="floatingTextarea">Pregunta</label>
+
+              <br />
+            </div>
+            <button
+              pButton
+              pRipple
+              type="button"
+              label="Realizar Pregunta"
+              (click)="saveQuestion()"
+              class="p-button-outlined p-button-info"
+            ></button>
+
+            <hr />
+          </div>
         </div>
       </div>
-    </div>
+    </form>
   </div>
   <div class="modal-footer">
     <button

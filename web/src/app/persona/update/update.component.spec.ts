@@ -8,9 +8,9 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { QuestionService } from 'src/app/Service/question.service';
-import { ServiceService } from 'src/app/Service/service.service';
-import { environment } from 'src/environments/environment';
+import { QuestionService } from '../../Service/question.service';
+import { ServiceService } from '../../Service/service.service';
+import { environment } from '../../../environments/environment';
 
 import { UpdateComponent } from './update.component';
 
