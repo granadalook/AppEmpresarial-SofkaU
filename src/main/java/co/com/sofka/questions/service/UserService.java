@@ -24,6 +24,7 @@ public class UserService {
 
     @PostConstruct
     public void init() {
+
         data = new HashMap<>();
 
         //username:passwowrd -> user:user
