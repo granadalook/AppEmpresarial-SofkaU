@@ -50,9 +50,9 @@ public class JWTUtil {
         return expiration.before(new Date());
     }
 
-    public String generateToken(User user) {
+    public String generateToken(UserInto user) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", user.getRoles());
+        //claims.put("role", user.getRoles());
         return doGenerateToken(claims, user.getUsername());
     }
 

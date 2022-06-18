@@ -7,13 +7,21 @@ import java.util.function.Function;
 
 @Component
 public class MapperUser {
-    public Function<UserDTO, UserInto> mapperToUserInto(String id){
+    public Function<UserDTO, UserInto> mapperToUserInto(){
         return  updateUserInto ->{
             var userInto = new UserInto();
-            userInto.setId(id);
-            userInto.setUsername(updateUserInto.getUsername());
+            userInto.setUsername((updateUserInto.getUsername()));
             userInto.setPassword(updateUserInto.getPassword());
             return userInto;
+        };
+    }
+    public  Function<UserInto,UserDTO> mapperToUserDto(){
+        return updateUserDto ->{
+            var userDto = new  UserDTO();
+            userDto.setId(userDto.getId());
+            userDto.setPassword(updateUserDto.getPassword());
+            userDto.setUsername(updateUserDto.getUsername());
+            return  userDto;
         };
     }
 }
