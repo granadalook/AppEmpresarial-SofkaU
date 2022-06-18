@@ -6,6 +6,7 @@ import co.com.sofka.questions.model.security.model.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
 
@@ -33,6 +35,10 @@ public class User implements UserDetails {
 
     @Getter @Setter
     private List<Role> roles;
+
+    public User(String userName, String encode) {
+
+    }
 
     @Override
     public String getUsername() {
@@ -78,5 +84,6 @@ public class User implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
+
 
 }

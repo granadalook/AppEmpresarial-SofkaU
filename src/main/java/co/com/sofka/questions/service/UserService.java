@@ -35,6 +35,9 @@ public class UserService {
     }
 
     public Mono<User> findByUsername(String username) {
-        return Mono.justOrEmpty(data.get(username));
+
+        Mono<User> local = Mono.justOrEmpty(data.get(username));
+
+        return local;
     }
 }

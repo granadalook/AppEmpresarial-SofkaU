@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import co.com.sofka.questions.collections.UserInto;
 import co.com.sofka.questions.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

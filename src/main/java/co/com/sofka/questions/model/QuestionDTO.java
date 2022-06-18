@@ -9,13 +9,13 @@ import java.util.Optional;
 
 public class QuestionDTO {
     private String id;
-    @NotBlank
+
     private String userId;
-    @NotBlank
+
     private String question;
-    @NotBlank
+
     private String type;
-    @NotBlank
+
     private String category;
     private List<AnswerDTO> answers;
 

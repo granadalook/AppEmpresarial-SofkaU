@@ -24,5 +24,4 @@ public class CreateUseCase implements SaveQuestion {
                 .save(mapperUtils.mapperToQuestion(null).apply(newQuestion))
                 .map(Question::getId);
     }
-
 }
