@@ -36,13 +36,9 @@ public class AuthenticationREST {
 
     @PostMapping("/login")
     public Mono<ResponseEntity<AuthResponse>> login(@RequestBody AuthRequest login) {
-
         return userService1.getUserByUsername(login.getUsername())
-
                 .filter(userDetails -> (login.getPassword()).equals(userDetails.getPassword()))
-
                 .map(userDetails -> ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(userDetails), userDetails.getUsername())))
-
                 .switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()));
     }
 
@@ -51,7 +47,7 @@ public class AuthenticationREST {
     public ResponseEntity<Mono<UserDTO>> register(@RequestBody UserDTO introUser) {
 
         var registro = userService1.save(mapperUser.mapperToUserInto().apply(introUser)).map(mapperUser.mapperToUserDto());
-        return new ResponseEntity<>(registro, HttpStatus.CREATED);
+        return new ResponseEntity<>(registro, HttpStatus.OK);
     }
 }
 
