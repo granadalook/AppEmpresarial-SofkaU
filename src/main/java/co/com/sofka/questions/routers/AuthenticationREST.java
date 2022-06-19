@@ -45,7 +45,6 @@ public class AuthenticationREST {
 
     @PostMapping("/register")
     public ResponseEntity<Mono<UserDTO>> register(@RequestBody UserDTO introUser) {
-
         var registro = userService1.save(mapperUser.mapperToUserInto().apply(introUser)).map(mapperUser.mapperToUserDto());
         return new ResponseEntity<>(registro, HttpStatus.OK);
     }

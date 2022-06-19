@@ -6,6 +6,7 @@ import co.com.sofka.questions.usecases.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -48,9 +49,11 @@ public class QuestionRouter {
         );
     }
 
+
     @Bean
     @CrossOrigin
     @PostMapping("/create")
+  // @PreAuthorize("rol('ROLE_ADMIN')")
     public RouterFunction<ServerResponse> create(CreateUseCase createUseCase) {
         Function<QuestionDTO, Mono<ServerResponse>> executor = questionDTO ->  createUseCase.apply(questionDTO)
                 .flatMap(result -> ServerResponse.ok()
