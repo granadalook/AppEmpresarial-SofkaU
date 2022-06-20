@@ -1,43 +1,36 @@
 package co.com.sofka.questions.service;
 
-
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
-import co.com.sofka.questions.model.User;
-import co.com.sofka.questions.model.security.model.Role;
+import co.com.sofka.questions.collections.UserInto;
+import co.com.sofka.questions.repositories.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import reactor.core.publisher.Mono;
 
-/**
- * This is just an example, you can load the user from the database from the repository.
- *
- */
+
+//import javax.transaction.Transactional;
+
+
 @Service
+@Validated
+@AllArgsConstructor
 public class UserService {
+    private final UserRepository userRepository;
 
-    private Map<String, User> data;
-
-    @PostConstruct
-    public void init() {
-
-        data = new HashMap<>();
-
-        //username:passwowrd -> user:user
-        data.put("user", new User("user", "cBrlgyL2GI2GINuLUUwgojITuIufFycpLG4490dhGtY=", true, Arrays.asList(Role.ROLE_USER)));
-
-        //username:passwowrd -> admin:admin
-        data.put("admin", new User("admin", "dQNjUIMorJb8Ubj2+wVGYp6eAeYkdekqAcnYp+aRq5w=", true, Arrays.asList(Role.ROLE_ADMIN)));
+    public Mono<UserInto> getByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
-    public Mono<User> findByUsername(String username) {
-
-        Mono<User> local = Mono.justOrEmpty(data.get(username));
-
-        return local;
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
+
+    public Mono<UserInto> save(UserInto user) {
+        return userRepository.save(user);
+    }
+
+   public  Mono<UserInto> getUserByUsername(String username){
+       return  userRepository.findUserByUsername(username);
+
+  }
 }

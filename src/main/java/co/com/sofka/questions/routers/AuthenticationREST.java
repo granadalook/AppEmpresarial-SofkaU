@@ -1,23 +1,20 @@
 package co.com.sofka.questions.routers;
 
+import co.com.sofka.questions.model.AuthResponse;
 import co.com.sofka.questions.model.MapperUser;
 import co.com.sofka.questions.model.UserDTO;
-import co.com.sofka.questions.model.security.AuthRequest;
-import co.com.sofka.questions.model.security.JWTUtil;
-import co.com.sofka.questions.model.security.PBKDF2Encoder;
-import co.com.sofka.questions.model.security.model.AuthResponse;
+import co.com.sofka.questions.model.AuthRequest;
+import co.com.sofka.questions.security.JWTUtil;
+import co.com.sofka.questions.security.PBKDF2Encoder;
+
 import co.com.sofka.questions.service.UserService;
-import co.com.sofka.questions.service.UserService1;
 import lombok.AllArgsConstructor;
 
 
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-
-import java.util.logging.Logger;
 
 
 @RestController
@@ -29,7 +26,7 @@ public class AuthenticationREST {
     private JWTUtil jwtUtil;
     private PBKDF2Encoder passwordEncoder;
     private UserService userService;
-    private final UserService1 userService1;
+    private final UserService userService1;
     private final MapperUser mapperUser;
 
 
@@ -38,7 +35,7 @@ public class AuthenticationREST {
     public Mono<ResponseEntity<AuthResponse>> login(@RequestBody AuthRequest login) {
         return userService1.getUserByUsername(login.getUsername())
                 .filter(userDetails -> (login.getPassword()).equals(userDetails.getPassword()))
-                .map(userDetails -> ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(userDetails), userDetails.getUsername())))
+                .map(userDetails -> ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(userDetails))))
                 .switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()));
     }
 

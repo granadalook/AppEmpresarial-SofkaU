@@ -1,4 +1,4 @@
-package co.com.sofka.questions.model.security;
+package co.com.sofka.questions.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.config.CorsRegistry;

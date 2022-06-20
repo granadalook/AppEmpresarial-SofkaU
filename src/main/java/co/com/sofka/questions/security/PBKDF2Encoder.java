@@ -1,4 +1,4 @@
-package co.com.sofka.questions.model.security;
+package co.com.sofka.questions.security;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;

@@ -53,7 +53,6 @@ public class QuestionRouter {
     @Bean
     @CrossOrigin
     @PostMapping("/create")
-  // @PreAuthorize("rol('ROLE_ADMIN')")
     public RouterFunction<ServerResponse> create(CreateUseCase createUseCase) {
         Function<QuestionDTO, Mono<ServerResponse>> executor = questionDTO ->  createUseCase.apply(questionDTO)
                 .flatMap(result -> ServerResponse.ok()

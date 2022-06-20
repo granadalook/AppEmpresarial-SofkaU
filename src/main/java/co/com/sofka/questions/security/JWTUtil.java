@@ -1,19 +1,15 @@
-package co.com.sofka.questions.model.security;
+package co.com.sofka.questions.security;
 
 
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.annotation.PostConstruct;
-
 import co.com.sofka.questions.collections.UserInto;
-import co.com.sofka.questions.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

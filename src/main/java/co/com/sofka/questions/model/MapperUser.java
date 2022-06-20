@@ -1,7 +1,6 @@
 package co.com.sofka.questions.model;
 
 import co.com.sofka.questions.collections.UserInto;
-import co.com.sofka.questions.model.security.Role;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -32,4 +31,5 @@ public class MapperUser {
             return userDto;
         };
     }
+
 }

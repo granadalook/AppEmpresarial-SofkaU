@@ -1,4 +1,4 @@
-package co.com.sofka.questions.model.security;
+package co.com.sofka.questions.security;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

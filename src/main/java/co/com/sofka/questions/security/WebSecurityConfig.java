@@ -1,4 +1,4 @@
-package co.com.sofka.questions.model.security;
+package co.com.sofka.questions.security;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

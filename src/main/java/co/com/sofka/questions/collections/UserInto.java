@@ -1,9 +1,10 @@
 package co.com.sofka.questions.collections;
 
-import co.com.sofka.questions.model.security.Role;
+import co.com.sofka.questions.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Document
 @Data
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserInto implements UserDetails {
@@ -25,10 +27,6 @@ public class UserInto implements UserDetails {
     private String username;
     private String password;
     private List<Role>  rol;
-
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return this.roles.stream().map(authority -> new SimpleGrantedAuthority(authority.name())).collect(Collectors.toList());
-//    }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.rol.stream().map(authority -> new SimpleGrantedAuthority(authority.name())).collect(Collectors.toList());

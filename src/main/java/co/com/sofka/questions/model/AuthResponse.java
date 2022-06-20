@@ -1,4 +1,4 @@
-package co.com.sofka.questions.model.security;
+package co.com.sofka.questions.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
