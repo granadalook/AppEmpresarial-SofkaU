@@ -12,15 +12,18 @@ import lombok.AllArgsConstructor;
 
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+
+import java.net.URI;
 
 
 @RestController
 @AllArgsConstructor
 @CrossOrigin
-@RequestMapping
+@RequestMapping("/users")
 public class AuthenticationREST {
 
     private JWTUtil jwtUtil;
@@ -41,16 +44,15 @@ public class AuthenticationREST {
 
 
     @PostMapping("/register")
-    public ResponseEntity<Mono<UserDTO>> register(@RequestBody UserDTO introUser) {
-        var registro = userService1.save(mapperUser.mapperToUserInto().apply(introUser)).map(mapperUser.mapperToUserDto());
-        return new ResponseEntity<>(registro, HttpStatus.OK);
+    public Mono<ResponseEntity> register(@RequestBody UserDTO introUser) {
+       return userService.getUserByUsername(introUser.getUsername()).flatMap(user -> {
+            if (user.getUsername() == introUser.getUsername()) {
+                return Mono.just(new ResponseEntity("Usuario ya registrado", HttpStatus.BAD_REQUEST));
+            }
+            return userService.save(mapperUser.mapperToUserInto().apply(introUser))
+                    .map(element -> ResponseEntity.created(URI.create("/users".concat(element.getId())))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(element));
+       });
     }
 }
-
-
-//Mono.just( ResponseEntity.ok("Usuario registrado"));
-//      if(bindingResult.hasErrors())
-//          return new ResponseEntity("email invalido o campos mal diligenciados", HttpStatus.BAD_REQUEST);
-//       if(userService1.existsByUsername(newUser.getUsername()))
-//         return new ResponseEntity<>("Usuario ya existe", HttpStatus.BAD_REQUEST);
-// return Mono.just(ResponseEntity.status(HttpStatus.OK).build());-----.status(HttpStatus.OK).build()

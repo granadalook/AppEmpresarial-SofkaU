@@ -21,9 +21,9 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public boolean existsByUsername(String username) {
+    /*public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
-    }
+    }*/
 
     public Mono<UserInto> save(UserInto user) {
         return userRepository.save(user);

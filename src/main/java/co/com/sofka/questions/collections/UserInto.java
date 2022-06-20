@@ -1,10 +1,7 @@
 package co.com.sofka.questions.collections;
 
 import co.com.sofka.questions.model.Role;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +21,8 @@ import java.util.stream.Collectors;
 public class UserInto implements UserDetails {
     @Id
     private String id;
+
+    @Getter @Setter
     private String username;
     private String password;
     private List<Role>  rol;
@@ -32,6 +31,10 @@ public class UserInto implements UserDetails {
         return this.rol.stream().map(authority -> new SimpleGrantedAuthority(authority.name())).collect(Collectors.toList());
     }
 
+    @Override
+    public String getUsername() {
+        return username;
+    }
     @Override
     public boolean isAccountNonExpired() {
         return false;
