@@ -81,17 +81,17 @@ export class QuestionService {
       { headers: this.sendHeaders() }
     );
   }
-
+  /* 
   editQuestion(question: QuestionI): Observable<any> {
     let direction = this.url + 'update';
     return this.http.post<any>(direction, question);
-  }
-  getPage(page: number): Observable<QuestionI[]> {
+  } */
+  /*  getPage(page: number): Observable<QuestionI[]> {
     let direction = this.url + 'pagination/' + page;
     return this.http.get<QuestionI[]>(direction);
-  }
-  getTotalPages(): Observable<number> {
+  } */
+  /*  getTotalPages(): Observable<number> {
     let direction = this.url + 'totalPages';
     return this.http.get<number>(direction);
-  }
+  } */
 }

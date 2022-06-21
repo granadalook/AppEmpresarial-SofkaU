@@ -19,15 +19,15 @@ export class EditComponent implements OnInit {
   @Input() question2: QuestionI[] | undefined;
   userLogged = this.authService.getUserLogged();
   answers: AnswerI[] | undefined;
-  @Input() idanswer: any='';
+  @Input() idanswer: any = '';
   question: answe = {
-    id:'',
-    userId:'',
+    id: '',
+    userId: '',
     question: '',
     type: '',
     category: '',
-    answers:[null],
-    start: '2'
+    answers: [null],
+    start: '2',
   };
 
   constructor(
@@ -44,22 +44,19 @@ export class EditComponent implements OnInit {
     this.getDatos();
   }
 
-  getDatos(){
-    this.question=this.idanswer;
+  getDatos() {
+    this.question = this.idanswer;
   }
-  
 
   openVerticallyCentered(content: any) {
     this.modalService.open(content, { centered: true });
   }
 
-  getData(){    
-    this.userLogged.subscribe(value=>{
-    })
-    
+  getData() {
+    this.userLogged.subscribe((value) => {});
   }
 
-
+  /* 
   editQuestion(question: QuestionI): void{
      question.id=this.idanswer.id;
     question.userId=this.idanswer.userId;
@@ -76,39 +73,36 @@ export class EditComponent implements OnInit {
     setTimeout(() => {
       window.location.reload();
     }, 2000);
-  }
+  } */
 
   saveQuestion(question: QuestionI): void {
-    if(question.type && question.category){    
-     this.modalService.dismissAll();
-     this.services.saveQuestion(question).subscribe({
-       next: (v) => {       
-         if (v) {
-           this.messageService.add({
-             severity: 'success',
-             summary: 'Se ha agregado la pregunta',
-             
+    if (question.type && question.category) {
+      this.modalService.dismissAll();
+      this.services.saveQuestion(question).subscribe({
+        next: (v) => {
+          if (v) {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Se ha agregado la pregunta',
             });
             setTimeout(() => {
-            window.location.reload();
-          }, 2000);
-        } else {
-          
-        }
-      },
-      error: (e) =>
-      this.toastr.error(e.mesaje, 'Fail', {
-        timeOut: 3000,
-      }),
-      complete: () => console.info('complete'),
-    });
-  }else{
-   
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Rectifique los datos',
-      detail: '(Campos Vacios)-Intente de Nuevo',
-    });
-  }
+              window.location.reload();
+            }, 2000);
+          } else {
+          }
+        },
+        error: (e) =>
+          this.toastr.error(e.mesaje, 'Fail', {
+            timeOut: 3000,
+          }),
+        complete: () => console.info('complete'),
+      });
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Rectifique los datos',
+        detail: '(Campos Vacios)-Intente de Nuevo',
+      });
+    }
   }
 }
