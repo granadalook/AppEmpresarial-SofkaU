@@ -18,7 +18,6 @@ public class CreateUseCase implements SaveQuestion {
         this.questionRepository = questionRepository;
         this.mapperUtils = mapperUtils;
     }
-    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public Mono<String> apply(QuestionDTO newQuestion) {
         return questionRepository

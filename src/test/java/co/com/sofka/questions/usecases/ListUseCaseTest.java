@@ -5,27 +5,31 @@ import co.com.sofka.questions.repositories.QuestionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 
 import static org.mockito.Mockito.*;
 
-class ListUseCaseTest {
+@ExtendWith(MockitoExtension.class)
+public class ListUseCaseTest {
 
-     QuestionRepository repository;
-     ListUseCase listUseCase;
+    @Mock
+    private QuestionRepository repository;
+    ListUseCase listUseCase;
 
 
     @BeforeEach
     public void setup(){
         MapperUtils mapperUtils = new MapperUtils();
-        repository = mock(QuestionRepository.class);
         listUseCase = new ListUseCase(mapperUtils, repository);
     }
 
     @Test
-     void getValidationTest(){
+     void listQuestionTest(){
         var question =  new Question();
         question.setUserId("xxxx-xxxx");
         question.setType("tech");
