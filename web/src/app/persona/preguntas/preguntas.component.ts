@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { QuestionI } from 'src/app/models/question-i';
 import { QuestionService } from 'src/app/Service/question.service';
 import { ServiceService } from 'src/app/Service/service.service';
+import { TokenServiceService } from 'src/app/Service/tokenService/token-service.service';
 
 @Component({
   selector: 'app-preguntas',
@@ -10,39 +11,41 @@ import { ServiceService } from 'src/app/Service/service.service';
 })
 export class PreguntasComponent implements OnInit {
   userLogged = this.authService.getUserLogged();
-  uid: any;
-
   totalQuestions: number = 0;
-
-  questions: QuestionI[] | undefined;
+  uid: string = '';
+  questions: Array<QuestionI> = [];
   user: any = '';
   page: number = 0;
   pages: Array<number> | undefined;
   disabled: boolean = false;
+  nombre: string = '';
+  isLogged: boolean = false;
 
   constructor(
     private service: QuestionService,
-    public authService: ServiceService
+    public authService: ServiceService,
+    private tokenService: TokenServiceService
   ) {}
 
   ngOnInit(): void {
+    if (this.tokenService.getToken()) {
+      this.isLogged = true;
+    }
     this.getQuestions();
     this.traerdatos();
   }
 
   getQuestions(): void {
-    this.userLogged.subscribe(value =>{
-        this.uid=value?.uid
+    this.service.getAllQuestions().subscribe((value) => {
+      this.questions = value;
+      this.totalQuestions = value.length;
     });
-    this.service.getPage(this.page).subscribe((data) => {
-        this.questions = data;
-    });
-    this.service
+    /*  this.service.getPage(this.page).subscribe((data) => {
+      // this.questions = data;
+    }); */
+    /*   this.service
       .getTotalPages()
-      .subscribe((data) => (this.pages = new Array(data)));
-    this.service
-      .getCountQuestions()
-      .subscribe((data) => (this.totalQuestions = data));
+      .subscribe((data) => (this.pages = new Array(data))); */
   }
 
   isLast(): boolean {
@@ -68,11 +71,11 @@ export class PreguntasComponent implements OnInit {
   }
 
   traerdatos() {
-    this.userLogged.subscribe((value) => {     
+    this.userLogged.subscribe((value) => {
       if (value?.email == undefined) {
-        this.disabled = true;       
+        this.disabled = true;
       } else {
-        this.disabled = false;     
+        this.disabled = false;
       }
     });
   }

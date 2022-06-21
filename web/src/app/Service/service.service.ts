@@ -31,10 +31,10 @@ export class ServiceService {
     });
   }
 
-  async login(email: string, password: string) {
+  async login(userName: string, password: string) {
     try {
       return await this.afauth
-        .signInWithEmailAndPassword(email, password)      
+        .signInWithEmailAndPassword(userName, password)      
         
     } catch (error) {
       return null;

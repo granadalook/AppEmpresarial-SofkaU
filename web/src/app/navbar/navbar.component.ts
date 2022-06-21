@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ServiceService } from '../Service/service.service';
+import { TokenServiceService } from '../Service/tokenService/token-service.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,19 +11,31 @@ import { ServiceService } from '../Service/service.service';
 export class NavbarComponent implements OnInit {
   userLogged = this.authService.getUserLogged();
   disabled: boolean = false;
+  islogged: boolean = false;
+  userName: string | null = '';
 
-  constructor(private authService: ServiceService, private route: Router) {}
+  constructor(
+    private authService: ServiceService,
+    private route: Router,
+    private tokenService: TokenServiceService
+  ) {}
 
   ngOnInit(): void {
     this.traerdatos();
+    if (this.tokenService.getToken()) {
+      this.islogged = true;
+      this.userName = this.tokenService.getUserName();
+    } else {
+      this.islogged = false;
+    }
   }
 
   traerdatos() {
-    this.userLogged.subscribe((value) => {    
+    this.userLogged.subscribe((value) => {
       if (value?.email == undefined) {
-        this.disabled = true;        
+        this.disabled = true;
       } else {
-        this.disabled = false;       
+        this.disabled = false;
       }
     });
   }
@@ -31,5 +44,8 @@ export class NavbarComponent implements OnInit {
     this.route.navigate(['login']);
   }
 
-  
+  offlogin() {
+    this.tokenService.logOut();
+    window.location.reload();
+  }
 }

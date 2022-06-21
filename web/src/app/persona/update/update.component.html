@@ -1,0 +1,56 @@
+<p-toast></p-toast>
+<app-navbar></app-navbar>
+<div style="text-align: right"></div>
+<div class="container">
+  <div class="card text-center">
+    <div class="card-header">
+      <B>Actualizar datos</B>
+      <i class="pi pi-user" style="font-size: 1rem; margin-left: 10px"></i>
+    </div>
+    <div class="card-body" style="margin: 20px">
+      <form [formGroup]="form">
+        <span class="p-float-label" style="margin: 20px">
+          <input
+            id="float-input"
+            type="text"
+            [(ngModel)]="updateUser.username"
+            formControlName="email"
+            pInputText
+          />
+          <label for="float-input">Correo</label>
+        </span>
+        <span class="p-float-label" style="margin: 20px; margin-top: 30px">
+          <p-password
+            [(ngModel)]="updateUser.password"
+            formControlName="password"
+          >
+            <ng-template pTemplate="header">
+              <h6>Ingrese su nueva contraseña</h6>
+            </ng-template>
+            <ng-template pTemplate="footer">
+              <p-divider></p-divider>
+              <p class="mt-2">Sugerencias</p>
+              <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                <li>Al menos una minúscula</li>
+                <li>Al menos una mayúscula</li>
+                <li>Al menos un numérico</li>
+                <li>Mínimo 8 caracteres</li>
+              </ul>
+            </ng-template>
+          </p-password>
+        </span>
+        <button
+          [disabled]="form.invalid"
+          (click)="update()"
+          pButton
+          pRipple
+          type="button"
+          label="Actualizar"
+          class="p-button-raised p-button-success"
+          style="margin-bottom: 10px"
+        ></button>
+        <br />
+      </form>
+    </div>
+  </div>
+</div>

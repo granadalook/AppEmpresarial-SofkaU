@@ -3,6 +3,7 @@ package co.com.sofka.questions.usecases;
 import co.com.sofka.questions.collections.Question;
 import co.com.sofka.questions.model.QuestionDTO;
 import co.com.sofka.questions.repositories.QuestionRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import reactor.core.publisher.Mono;
@@ -17,7 +18,7 @@ public class CreateUseCase implements SaveQuestion {
         this.questionRepository = questionRepository;
         this.mapperUtils = mapperUtils;
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public Mono<String> apply(QuestionDTO newQuestion) {
         return questionRepository

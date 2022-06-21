@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
-import { ServiceService } from 'src/app/Service/service.service';
+import { Userback } from 'src/app/models/Userback';
+import { AuthServiceService } from 'src/app/Service/authService/auth-service.service';
+import { TokenServiceService } from 'src/app/Service/tokenService/token-service.service';
 
 @Component({
   selector: 'app-login',
@@ -11,124 +13,73 @@ import { ServiceService } from 'src/app/Service/service.service';
   providers: [MessageService],
 })
 export class LoginComponent implements OnInit {
-  mostrar: Boolean = false;
-  mostrar2: Boolean = false;
-  val1: number = 3;
+  isLogged: boolean = false;
+  isLoginFail: boolean = false;
   displayModal: boolean = false;
-  email: any = '';
+  change: boolean = true;
+  username?: string;
+  password?: string;
+  loginUser: Userback;
+  roles: string[] = [];
+  errMsj: string = '';
 
   public form: FormGroup = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(10)]],
-    rating: ['', []],
+    username: ['', [Validators.email]],
+    password: ['', [Validators.required]],
   });
-  public form2: FormGroup = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
-  });
-
   constructor(
     private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private authService: ServiceService,
+    private authService: AuthServiceService,
+    private tokenService: TokenServiceService,
     private route: Router
-  ) {}
-
-  ngOnInit(): void {}
-
-  ingresar() {
-    this.mostrar = !this.mostrar;
-    this.authService
-      .login(this.form.value.email, this.form.value.password)
-      .then((res) => {       
-        if (res == undefined) {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Rectifique los datos',
-            detail: 'Clave o Usuario incorrecto, Intente de Nuevo',
-          });
-        } else {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Bienvenido',
-            detail: 'Disfruta de tu estadía',
-          });
-          this.route.navigate(['preguntas']);
-        }
-
-        this.mostrar = !this.mostrar;
-      });
+  ) {
+    this.loginUser = {
+      username: '',
+      password: '',
+    };
   }
-  ingresarGoogle() {
-    this.mostrar = !this.mostrar;       
-    this.authService
-      .loginGoogle(this.form.value.email, this.form.value.password)
-      .then((res) => {
-        if (res) {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Bienvenido',
-            detail: 'Disfruta de tu estadía',
-          });
-          setTimeout(() => {
-            this.route.navigate(['preguntas']);
-          }, 3000);
 
-        } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Rectifique los datos',
-            detail: 'Clave o Usuario incorrecto, Intente de Nuevo',
-          });
-          
-        }
-        this.mostrar = !this.mostrar;
-      });
+  ngOnInit(): void {
+    if (this.tokenService.getToken()) {
+      this.isLogged = true;
+      this.isLoginFail = false;
+      this.roles = this.tokenService.getAuthorities();
+    }
   }
-  getUserLogged() {
-    this.authService.getUserLogged().subscribe((res) => {     
-    });
+  Registrarme() {
+    this.route.navigate(['registro']);
   }
- 
-  preguntasHome() {
+  ClickAqui() {
+    this.route.navigate(['reset']);
+  }
+  navegar() {
     this.route.navigate(['preguntas']);
   }
 
-  //TODO: Utilidades
-  showSuccess() {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: 'Message Content',
-    });
-  }
-  showInfo() {
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Info',
-      detail: 'Message Content',
-    });
-  }
-  showError() {}
-  spinner() {
-    this.mostrar = !this.mostrar;
-  }
-
-  showModalDialog() {
-    this.displayModal = true;
-  }
-
-  recuperarEmail() {
-    try {
-      this.mostrar2 = !this.mostrar2;
-      this.authService.resetPassword(this.form2.value.email).then((res) => {
-        this.displayModal = false;
+  ingresar() {
+    this.authService.login(this.loginUser).subscribe(
+      (response) => {
+        this.change = false;
+        this.isLogged = true;
+        this.tokenService.setUserName(response.username);
+        this.tokenService.setToken(response.token);
         this.messageService.add({
           severity: 'success',
-          summary: '!Exitoso¡',
-          detail: 'Revisa tu bandeja de entrada',
+          summary: 'Bienvenido ' + response.username,
+          detail: 'Gracias por visitarnos',
+        }),
+          setTimeout(() => {
+            this.route.navigate(['preguntas']);
+          }, 3000);
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rectifique los datos',
+          detail: 'Clave o Usuario incorrecto, Intente de Nuevo',
         });
-      });
-      this.mostrar2 = !this.mostrar2;
-    } catch (error) {}
+      }
+    );
   }
 }
