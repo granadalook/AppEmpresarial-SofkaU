@@ -42,24 +42,23 @@ export class QuestionService {
   //*****HECHO*****//
   getAllQuestions() {
     return this.http.get<Array<QuestionI>>(
-      `${environment.urlBaseLocal}${environment.getAllQuestions}`
+      `${environment.authURL}${environment.getAllQuestions}`
     );
   }
 
   //*****HECHO*****//
   getAnswer(id: any) {
     return this.http
-      .get<QuestionI>(
-        `${environment.urlBaseLocal}${environment.getAnswer}` + id,
-        { headers: this.sendHeaders() }
-      )
+      .get<QuestionI>(`${environment.authURL}${environment.getAnswer}` + id, {
+        headers: this.sendHeaders(),
+      })
       .pipe(map((r) => r.answers));
   }
 
   //*****HECHO*****//
   getQuestion(id: string) {
     return this.http.get<QuestionI>(
-      `${environment.urlBaseLocal}${environment.getAnswer}` + id,
+      `${environment.authURL}${environment.getAnswer}` + id,
       { headers: this.sendHeaders() }
     );
   }
@@ -67,7 +66,7 @@ export class QuestionService {
   //*****HECHO*****//
   saveQuestion(question: NewQuestion) {
     return this.http.post<NewQuestion>(
-      `${environment.urlBaseLocal}${environment.Create}`,
+      `${environment.authURL}${environment.Create}`,
       question,
       { headers: this.sendHeaders() }
     );
@@ -76,7 +75,7 @@ export class QuestionService {
   //*****HECHO*****//
   saveAnswer(answer: AnswerI) {
     return this.http.post<any>(
-      `${environment.urlBaseLocal}${environment.saveAnswer}`,
+      `${environment.authURL}${environment.saveAnswer}`,
       answer,
       { headers: this.sendHeaders() }
     );

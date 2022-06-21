@@ -8,5 +8,13 @@ export const environment = {
     messagingSenderId: '758669605604',
   },
   production: true,
-
+  authURL: 'https://appempresarialv2.herokuapp.com/',
+  loginEnd: 'login',
+  Create: 'create',
+  update: 'update',
+  getAllQuestions: 'getAll',
+  countQuestions: 'countQuestions',
+  createQuestions: 'register',
+  saveAnswer: 'add',
+  getAnswer: 'get/',
 };
