@@ -19,7 +19,6 @@ export class UpdateComponent implements OnInit {
   public form: FormGroup = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
-    rating: ['', []],
   });
 
   constructor(
@@ -36,7 +35,9 @@ export class UpdateComponent implements OnInit {
 
   ngOnInit(): void {}
   update() {
-    this.updateService.updateUser(this.updateUser).subscribe((res) => {});
+    this.updateService.updateUser(this.updateUser).subscribe((res) => {
+      console.log('res', res.status);
+    });
     this.messageService.add({
       severity: 'success',
       summary: 'Felicitaciones',

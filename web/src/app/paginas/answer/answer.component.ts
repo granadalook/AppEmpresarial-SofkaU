@@ -7,6 +7,7 @@ import { QuestionService } from 'src/app/Service/question.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ServiceService } from 'src/app/Service/service.service';
+import { TokenServiceService } from 'src/app/Service/tokenService/token-service.service';
 
 @Component({
   selector: 'app-answer',
@@ -15,12 +16,14 @@ import { ServiceService } from 'src/app/Service/service.service';
   providers: [MessageService],
 })
 export class AnswerComponent implements OnInit {
+  isLogged: boolean = false;
   @Input() item: any;
   constructor(
     private modalService: NgbModal,
     private services: QuestionService,
     private messageService: MessageService,
-    public authService: ServiceService
+    public authService: ServiceService,
+    public tokenService: TokenServiceService
   ) {}
 
   answer: AnswerI = {
@@ -30,7 +33,11 @@ export class AnswerComponent implements OnInit {
     position: 0,
   };
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.tokenService.getToken()) {
+      this.isLogged = true;
+    }
+  }
 
   openVerticallyCentered(content: any) {
     this.modalService.open(content, { centered: true });

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Userback } from 'src/app/models/Userback';
@@ -12,8 +12,7 @@ export class UpdateService {
   constructor(private http: HttpClient) {}
 
   updateUser(update: Userback) {
-    console.log(update);
-    return this.http.post(
+       return this.http.put<HttpErrorResponse>(
       `${environment.authURL}${environment.update}`,
       update
     );

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { QuestionI } from 'src/app/models/question-i';
 import { QuestionService } from 'src/app/Service/question.service';
 import { ServiceService } from 'src/app/Service/service.service';
+import { TokenServiceService } from 'src/app/Service/tokenService/token-service.service';
 
 @Component({
   selector: 'app-preguntas',
@@ -17,14 +18,19 @@ export class PreguntasComponent implements OnInit {
   page: number = 0;
   pages: Array<number> | undefined;
   disabled: boolean = false;
- 
+  nombre: string = '';
+  isLogged: boolean = false;
 
   constructor(
     private service: QuestionService,
-    public authService: ServiceService
+    public authService: ServiceService,
+    private tokenService: TokenServiceService
   ) {}
 
   ngOnInit(): void {
+    if (this.tokenService.getToken()) {
+      this.isLogged = true;
+    }
     this.getQuestions();
     this.traerdatos();
   }
@@ -40,7 +46,6 @@ export class PreguntasComponent implements OnInit {
     this.service
       .getTotalPages()
       .subscribe((data) => (this.pages = new Array(data)));
-    
   }
 
   isLast(): boolean {

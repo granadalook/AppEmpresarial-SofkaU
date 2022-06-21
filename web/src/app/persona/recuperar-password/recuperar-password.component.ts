@@ -34,7 +34,7 @@ export class RecuperarPasswordComponent implements OnInit {
         severity: 'success',
         summary: 'Email de recuperacion enviado',
         detail:
-          'Revisa tu vandeja de entrada en ' +
+          'Revisa tu bandeja de entrada en ' +
           this.email +
           ' y actualiza tus datos',
       });

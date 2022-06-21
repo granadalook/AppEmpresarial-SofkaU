@@ -12,7 +12,7 @@ export const environment = {
   authURL: 'http://localhost:8080/',
   loginEnd: 'login',
   Create: 'create',
-  update: 'user',
+  update: 'update',
   getAllQuestions: 'getAll',
   countQuestions: 'countQuestions',
   createQuestions: 'register',

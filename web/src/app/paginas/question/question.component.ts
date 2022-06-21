@@ -56,7 +56,7 @@ export class QuestionComponent implements OnInit {
         if (err.status === 200) {
           this.messageService.add({
             severity: 'success',
-            summary: 'Gracias por preguntar ',
+            summary: 'Gracias por  su aporte',
             detail: 'Pregunta guardada',
           }),
             setTimeout(() => {
@@ -66,7 +66,7 @@ export class QuestionComponent implements OnInit {
           this.messageService.add({
             severity: 'error',
             summary: 'Rectifique los datos',
-            detail: 'Usuario no registrado',
+            detail: 'Campos Vacios-Intente de Nuevo',
           });
         }
       }

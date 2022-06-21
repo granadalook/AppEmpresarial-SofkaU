@@ -8,6 +8,7 @@
         height="75"
       />
     </a>
+
     <ng-container *ngIf="!islogged">
       <button
         type="button"
@@ -20,6 +21,9 @@
     </ng-container>
 
     <ng-container *ngIf="islogged">
+      <div>
+        <h2>{{ userName }}</h2>
+      </div>
       <button
         type="button"
         label="Iniciar Sesion"

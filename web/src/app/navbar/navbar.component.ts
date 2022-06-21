@@ -12,6 +12,7 @@ export class NavbarComponent implements OnInit {
   userLogged = this.authService.getUserLogged();
   disabled: boolean = false;
   islogged: boolean = false;
+  userName: string | null = '';
 
   constructor(
     private authService: ServiceService,
@@ -23,6 +24,7 @@ export class NavbarComponent implements OnInit {
     this.traerdatos();
     if (this.tokenService.getToken()) {
       this.islogged = true;
+      this.userName = this.tokenService.getUserName();
     } else {
       this.islogged = false;
     }
