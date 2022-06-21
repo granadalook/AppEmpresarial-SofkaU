@@ -17,9 +17,9 @@ import reactor.core.publisher.Mono;
 public class UserService {
     private final UserRepository userRepository;
 
-    public Mono<UserInto> getByUsername(String username) {
+    /*public Mono<UserInto> getByUsername(String username) {
         return userRepository.findByUsername(username);
-    }
+    }*/
 
     /*public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
