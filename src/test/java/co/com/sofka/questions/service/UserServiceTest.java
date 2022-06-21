@@ -36,7 +36,7 @@ public class UserServiceTest {
 
         var resultado = userService.save(userInto);
 
-        Assertions.assertNotNull( resultado);
+        Assertions.assertNotNull(resultado);
 
     }
 
@@ -52,7 +52,7 @@ public class UserServiceTest {
 
         Mono<UserInto> resultado = userService.getUserByUsername("titagena@gmail.com");
 
-        Assertions.assertNotNull( resultado);
+        Assertions.assertNotNull(resultado);
     }
 
 

@@ -24,7 +24,6 @@ public class CreateUseCaseTest {
     @Mock
     private QuestionRepository questionRepository;
 
-
     private MapperUtils mapper = new MapperUtils();
 
     CreateUseCase useCase;

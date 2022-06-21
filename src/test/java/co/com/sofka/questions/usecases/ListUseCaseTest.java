@@ -20,8 +20,6 @@ public class ListUseCaseTest {
     @Mock
     private QuestionRepository repository;
     ListUseCase listUseCase;
-
-
     @BeforeEach
     public void setup(){
         MapperUtils mapperUtils = new MapperUtils();

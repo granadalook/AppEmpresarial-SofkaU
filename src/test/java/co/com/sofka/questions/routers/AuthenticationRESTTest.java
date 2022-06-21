@@ -9,21 +9,21 @@ import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
 
 @WebFluxTest(AuthenticationREST.class)
 public class AuthenticationRESTTest {
-
     @Autowired
     private WebTestClient webTestClient;
 
     @Autowired
     private UserService userService;
-
-
 
     @Test
     public void register() {
@@ -37,8 +37,14 @@ public class AuthenticationRESTTest {
 
         Mockito.when(userService.save(userData)).then((Answer<?>) userData);
 
-        webTestClient.post().uri("/register").body(userDTO, UserDTO.class).exchange()
-                .expectStatus().isOk();
+        webTestClient.post().uri("/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromObject(userDTO))
+                .exchange()
+                .expectStatus().isOk()
+                .returnResult(UserInto.class).getResponseBody();
+
+        Mockito.verify(userService, times(1)).save(userData);
 
     }
 
