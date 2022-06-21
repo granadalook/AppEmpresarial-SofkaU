@@ -50,7 +50,7 @@ public class AuthenticationREST {
         return new ResponseEntity<>(registro, HttpStatus.OK);
     }
 
-    @PostMapping("/update")
+   @PutMapping("/update")
     public Mono<ResponseEntity<Void>> updatePassword(@RequestBody UserDTO userUpdate) {
         return userService.getUserByUsername(userUpdate.getUsername()).flatMap(element -> {
             element.setPassword(userUpdate.getPassword());
