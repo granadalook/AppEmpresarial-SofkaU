@@ -23,23 +23,25 @@ export class TokenServiceService {
     window.sessionStorage.removeItem(USERNAME_KEY);
     window.sessionStorage.setItem(USERNAME_KEY, userName);
   }
-  getUserName(): string | null {
+  getUserName() {
     return sessionStorage.getItem(USERNAME_KEY);
   }
   setAuthorities(authorities: string[]): void {
     window.sessionStorage.removeItem(AUTHORITIES_KEY);
     window.sessionStorage.setItem(AUTHORITIES_KEY, JSON.stringify(authorities));
   }
-  getAuthorities(): string[]{
+  getAuthorities(): string[] {
     this.roles = [];
     if (sessionStorage.getItem(AUTHORITIES_KEY)) {
-      JSON.parse(sessionStorage.getItem(AUTHORITIES_KEY)|| "{}" ).forEach((authority: { authority: string; }) => {
-        this.roles.push(authority.authority);
-      });
+      JSON.parse(sessionStorage.getItem(AUTHORITIES_KEY) || '{}').forEach(
+        (authority: { authority: string }) => {
+          this.roles.push(authority.authority);
+        }
+      );
     }
     return this.roles;
   }
-  logOut(): void{
+  logOut(): void {
     window.sessionStorage.clear();
   }
 }

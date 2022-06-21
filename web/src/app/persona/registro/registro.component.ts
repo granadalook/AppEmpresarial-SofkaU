@@ -35,34 +35,27 @@ export class RegistroComponent implements OnInit {
       password: '',
     };
   }
-
   ngOnInit(): void {}
-
   registrar() {
-    this.authService.loginRegistre(this.newUser).subscribe(
-      (res) => {},
-      (err) => {
-        console.log('status error--->' + err.status);
-        this.status = err.status;
-        if (this.status === 200) {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Bienvenido',
-            detail: 'Disfruta de tu estadía',
-          });
-          setTimeout(() => {
-            this.route.navigate(['preguntas']);
-          }, 3000);
-        } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Rectifique los datos',
-            detail: 'Clave o Usuario incorrecto, Intente de Nuevo',
-          });
-          setTimeout(() => {}, 3000);
-        }
+    this.authService.loginRegistre(this.newUser).subscribe((respuesta) => {
+      if (respuesta.username) {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Bienvenido',
+          detail: 'Disfruta de tu estadía',
+        });
+        setTimeout(() => {
+          this.route.navigate(['preguntas']);
+        }, 3000);
+      } else {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rectifique los datos',
+          detail: 'Clave o Usuario incorrecto, Intente de Nuevo',
+        });
+        setTimeout(() => {}, 3000);
       }
-    );
+    });
   }
   showSuccess() {
     this.messageService.add({

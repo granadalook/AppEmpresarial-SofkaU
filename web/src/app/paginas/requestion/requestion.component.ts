@@ -14,9 +14,7 @@ export class RequestionComponent implements OnInit {
   answers: AnswerI[] | undefined;
   answersNew: AnswerI[] = [];
   currentAnswer: number = 0;
-
   questions: QuestionI[] | undefined;
-
   page: number = 0;
 
   constructor(
@@ -46,12 +44,10 @@ export class RequestionComponent implements OnInit {
       this.answers = data.answers;
     });
   }
-
   AddAnwsers(index: number) {
     let last = this.currentAnswer + index;
     for (let i = this.currentAnswer; i < last; i++) {}
     this.currentAnswer += 10;
   }
-
   onScroll() {}
 }

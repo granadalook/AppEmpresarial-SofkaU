@@ -39,19 +39,14 @@ export class QuestionService {
     );
     return headers;
   }
-
+  //*****HECHO*****//
   getAllQuestions() {
     return this.http.get<Array<QuestionI>>(
-      `${environment.urlBaseLocal}${environment.getAllQuestions}`,
-      { headers: this.sendHeaders() }
+      `${environment.urlBaseLocal}${environment.getAllQuestions}`
     );
   }
 
-  getPage(page: number): Observable<QuestionI[]> {
-    let direction = this.url + 'pagination/' + page;
-    return this.http.get<QuestionI[]>(direction);
-  }
-
+  //*****HECHO*****//
   getAnswer(id: any) {
     return this.http
       .get<QuestionI>(
@@ -61,28 +56,25 @@ export class QuestionService {
       .pipe(map((r) => r.answers));
   }
 
+  //*****HECHO*****//
   getQuestion(id: string) {
-    return this.http
-      .get<QuestionI>(
-        `${environment.urlBaseLocal}${environment.getAnswer}` + id,
-        { headers: this.sendHeaders() }
-      )
+    return this.http.get<QuestionI>(
+      `${environment.urlBaseLocal}${environment.getAnswer}` + id,
+      { headers: this.sendHeaders() }
+    );
   }
 
-  getTotalPages(): Observable<number> {
-    let direction = this.url + 'totalPages';
-    return this.http.get<number>(direction);
-  }
-
+  //*****HECHO*****//
   saveQuestion(question: NewQuestion) {
     return this.http.post<NewQuestion>(
-      `${environment.urlBaseLocal}${environment.createQuestions}`,
+      `${environment.urlBaseLocal}${environment.Create}`,
       question,
       { headers: this.sendHeaders() }
     );
   }
 
-  saveAnswer(answer: AnswerI): Observable<any> {
+  //*****HECHO*****//
+  saveAnswer(answer: AnswerI) {
     return this.http.post<any>(
       `${environment.urlBaseLocal}${environment.saveAnswer}`,
       answer,
@@ -93,5 +85,13 @@ export class QuestionService {
   editQuestion(question: QuestionI): Observable<any> {
     let direction = this.url + 'update';
     return this.http.post<any>(direction, question);
+  }
+  getPage(page: number): Observable<QuestionI[]> {
+    let direction = this.url + 'pagination/' + page;
+    return this.http.get<QuestionI[]>(direction);
+  }
+  getTotalPages(): Observable<number> {
+    let direction = this.url + 'totalPages';
+    return this.http.get<number>(direction);
   }
 }

@@ -17,6 +17,7 @@ export class PreguntasComponent implements OnInit {
   page: number = 0;
   pages: Array<number> | undefined;
   disabled: boolean = false;
+ 
 
   constructor(
     private service: QuestionService,

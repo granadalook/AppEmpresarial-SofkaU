@@ -1,4 +1,3 @@
-
 export const environment = {
   firebase: {
     projectId: 'app-empresarial-a3b09',
@@ -12,11 +11,11 @@ export const environment = {
   urlBaseLocal: 'http://localhost:8080/',
   authURL: 'http://localhost:8080/',
   loginEnd: 'login',
-  //Create: 'create',
+  Create: 'create',
   update: 'user',
   getAllQuestions: 'getAll',
   countQuestions: 'countQuestions',
-  createQuestions: 'create',
+  createQuestions: 'register',
   saveAnswer: 'add',
   getAnswer: 'get/',
 };

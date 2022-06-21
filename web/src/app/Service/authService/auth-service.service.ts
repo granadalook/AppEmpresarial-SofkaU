@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Jwt } from 'src/app/models/Jwt';
@@ -46,8 +46,7 @@ export class AuthServiceService {
       newUser.username,
       newUser.password
     );
-    return this.http.post(
-      // se cambio la enviroment
+    return this.http.post<Userback>(
       `${environment.authURL}${environment.createQuestions}`,
       newUser
     );
@@ -71,8 +70,8 @@ export class AuthServiceService {
     }
   }
 
-  login(loginUser: Userback): Observable<Jwt> {
-    return this.http.post<any>(
+  login(loginUser: Userback) {
+    return this.http.post<Jwt>(
       `${environment.authURL}${environment.loginEnd}`,
       loginUser
     );

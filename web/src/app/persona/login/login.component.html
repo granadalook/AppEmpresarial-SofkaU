@@ -14,17 +14,17 @@
           <input
             id="float-input"
             type="text"
-            [(ngModel)]="loginUser.username"
-            formControlName="userName"
+            [(ngModel)]="this.loginUser.username"
+            formControlName="username"
             pInputText
           />
-          <label for="float-input">UserName</label>
+          <label for="float-input">Email</label>
         </span>
         <span class="p-float-label" style="margin: 20px; margin-top: 30px">
           <input
             id="float-input"
             type="password"
-            [(ngModel)]="loginUser.password"
+            [(ngModel)]="this.loginUser.password"
             formControlName="password"
             pInputText
           />
@@ -72,13 +72,3 @@
     <i class="pi pi-user-edit" style="margin-top: 5px"></i>
   </button>
 </div>
-<button
-  type="button"
-  (click)="ingresar()"
-  pButton
-  pRipple
-  label="Preguntas"
-  class="p-button-danger mb-2"
->
-  <i class="pi pi-user-edit" style="margin-top: 5px"></i> regusd
-</button>

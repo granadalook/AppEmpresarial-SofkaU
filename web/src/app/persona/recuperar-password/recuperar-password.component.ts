@@ -11,9 +11,8 @@ import { AuthServiceService } from 'src/app/Service/authService/auth-service.ser
   providers: [MessageService],
 })
 export class RecuperarPasswordComponent implements OnInit {
-  [x: string]: any;
   email: string = '';
-  enviado: boolean = true;
+
   public form: FormGroup = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
     rating: ['', []],
@@ -29,14 +28,25 @@ export class RecuperarPasswordComponent implements OnInit {
   ngOnInit(): void {}
 
   onReset() {
-    try {
+    if (this.email) {
       this.authSvc.resetPassword(this.email);
-      this.enviado = false;
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Email de recuperacion enviado',
+        detail:
+          'Revisa tu vandeja de entrada en ' +
+          this.email +
+          ' y actualiza tus datos',
+      });
       setTimeout(() => {
         this.route.navigate(['/update']);
       }, 5000);
-    } catch (error) {
-      console.log(error);
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Rectifique los datos',
+        detail: 'Error al recuperar los datos intente de nuevo',
+      });
     }
   }
 }

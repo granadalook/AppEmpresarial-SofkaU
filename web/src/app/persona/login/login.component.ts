@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   isLogged: boolean = false;
   isLoginFail: boolean = false;
   displayModal: boolean = false;
+  change: boolean = true;
   username?: string;
   password?: string;
   loginUser: Userback;
@@ -23,14 +24,9 @@ export class LoginComponent implements OnInit {
   errMsj: string = '';
 
   public form: FormGroup = this.formBuilder.group({
-    username: ['', [Validators.required]],
+    username: ['', [Validators.email]],
     password: ['', [Validators.required]],
-    rating: ['', []],
   });
-  public form2: FormGroup = this.formBuilder.group({
-    username: ['', [Validators.required]],
-  });
-
   constructor(
     private formBuilder: FormBuilder,
     private messageService: MessageService,
@@ -39,8 +35,8 @@ export class LoginComponent implements OnInit {
     private route: Router
   ) {
     this.loginUser = {
-      username: 'user',
-      password: 'user',
+      username: '',
+      password: '',
     };
   }
 
@@ -57,37 +53,32 @@ export class LoginComponent implements OnInit {
   ClickAqui() {
     this.route.navigate(['reset']);
   }
-
   navegar() {
     this.route.navigate(['preguntas']);
   }
 
   ingresar() {
-    let parce = JSON.stringify(this.loginUser);
-    
     this.authService.login(this.loginUser).subscribe(
-      (data) => {
+      (response) => {
+        this.change = false;
         this.isLogged = true;
-        //this.tokenService.setUserName(data.userName);
-        // this.tokenService.setAuthorities(data.authorities);
-        this.tokenService.setToken(data.token);
-        //this.roles = data.authorities;
+        this.tokenService.setUserName(response.username);
+        this.tokenService.setToken(response.token);
         this.messageService.add({
           severity: 'success',
-          summary: 'Bienvenido ' + data.userName,
+          summary: 'Bienvenido ' + response.username,
           detail: 'Gracias por visitarnos',
         }),
           setTimeout(() => {
             this.route.navigate(['preguntas']);
           }, 3000);
       },
-      (err) => {
+      (error) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Rectifique los datos',
           detail: 'Clave o Usuario incorrecto, Intente de Nuevo',
         });
-        setTimeout(() => {}, 3000);
       }
     );
   }

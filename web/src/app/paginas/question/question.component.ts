@@ -1,15 +1,12 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
 import { MessageService } from 'primeng/api';
-import { BehaviorSubject } from 'rxjs';
 import { AnswerI } from 'src/app/models/answer-i';
 import { NewQuestion } from 'src/app/models/newQuestion';
 import { QuestionService } from 'src/app/Service/question.service';
-import { ServiceService } from 'src/app/Service/service.service';
+import { TokenServiceService } from 'src/app/Service/tokenService/token-service.service';
 
 @Component({
   selector: 'app-question',
@@ -33,15 +30,15 @@ export class QuestionComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private modalService: NgbModal,
-    private authService: ServiceService,
     private services: QuestionService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private tokenService: TokenServiceService
   ) {
     this.newQuestion = {
       question: '',
       category: '',
       type: '',
-      userId: this.authService.userData.uid,
+      userId: this.tokenService.getUserName(),
     };
   }
 
@@ -59,17 +56,17 @@ export class QuestionComponent implements OnInit {
         if (err.status === 200) {
           this.messageService.add({
             severity: 'success',
-            summary: 'Bienvenido ',
-            detail: 'pregunta guardada',
+            summary: 'Gracias por preguntar ',
+            detail: 'Pregunta guardada',
           }),
             setTimeout(() => {
               window.location.reload();
-                         }, 3000);
+            }, 3000);
         } else {
           this.messageService.add({
             severity: 'error',
             summary: 'Rectifique los datos',
-            detail: '(Campos Vacios)-Intente de Nuevo',
+            detail: 'Usuario no registrado',
           });
         }
       }
