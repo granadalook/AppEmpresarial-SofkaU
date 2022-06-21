@@ -1,6 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire/compat';
+import { FormBuilder } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
@@ -24,6 +25,7 @@ describe('QuestionComponent', () => {
       ],
       declarations: [QuestionComponent],
       providers: [
+        FormBuilder,
         QuestionService,
         ToastrService,
         NgbModal,
