@@ -12,18 +12,17 @@ import lombok.AllArgsConstructor;
 
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 @RestController
 @AllArgsConstructor
 @CrossOrigin
-@RequestMapping("/users")
+@RequestMapping
 public class AuthenticationREST {
 
     private JWTUtil jwtUtil;
@@ -38,21 +37,14 @@ public class AuthenticationREST {
     public Mono<ResponseEntity<AuthResponse>> login(@RequestBody AuthRequest login) {
         return userService1.getUserByUsername(login.getUsername())
                 .filter(userDetails -> (login.getPassword()).equals(userDetails.getPassword()))
-                .map(userDetails -> ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(userDetails))))
+                .map(userDetails -> ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(userDetails), userDetails.getUsername())))
                 .switchIfEmpty(Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()));
     }
 
 
-    @PostMapping("/register")
-    public Mono<ResponseEntity> register(@RequestBody UserDTO introUser) {
-       return userService.getUserByUsername(introUser.getUsername()).flatMap(user -> {
-            if (user.getUsername() == introUser.getUsername()) {
-                return Mono.just(new ResponseEntity("Usuario ya registrado", HttpStatus.BAD_REQUEST));
-            }
-            return userService.save(mapperUser.mapperToUserInto().apply(introUser))
-                    .map(element -> ResponseEntity.created(URI.create("/users".concat(element.getId())))
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(element));
-       });
+    @PostMapping("register")
+    public ResponseEntity<Mono<UserDTO>> register(@RequestBody UserDTO introUser) {
+        var registro = userService.save(mapperUser.mapperToUserInto().apply(introUser)).map(mapperUser.mapperToUserDto());
+        return new ResponseEntity<>(registro, HttpStatus.OK);
     }
 }
