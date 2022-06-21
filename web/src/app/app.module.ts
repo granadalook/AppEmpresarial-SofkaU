@@ -28,6 +28,7 @@ import { provideDatabase, getDatabase } from '@angular/fire/database';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { RecuperarPasswordComponent } from './persona/recuperar-password/recuperar-password.component';
 import { UpdateComponent } from './persona/update/update.component';
+import { FooterComponent } from './footer/footer.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { UpdateComponent } from './persona/update/update.component';
     RequestionComponent,
     EditComponent,
     RecuperarPasswordComponent,
-   UpdateComponent
+   UpdateComponent,
+   FooterComponent
   ],
   imports: [
     BrowserModule,
